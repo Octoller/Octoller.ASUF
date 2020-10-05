@@ -16,13 +16,9 @@ namespace Octoller.ASUF.Kernel.Extenson {
 
         public static string GetValuePartKey(this Dictionary<string[], string> dictionary, string partKey) {
             foreach (var c in dictionary) {
-                var path = c.Value;
-                var arrayExtension = c.Key;
-                if (!arrayExtension.Contains(partKey)) {
-                    continue;
-                } else {
-                    return path;
-                }
+                if (c.Key.Contains(partKey)) {
+                    return c.Value;
+                } 
             }
             return null;
         }
