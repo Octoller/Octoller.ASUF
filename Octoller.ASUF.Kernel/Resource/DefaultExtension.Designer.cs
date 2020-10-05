@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Octoller.ASUF.SystemLogic.Resource {
+namespace Octoller.ASUF.Kernel.Resource {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace Octoller.ASUF.SystemLogic.Resource {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Octoller.ASUF.SystemLogic.Resource.DefaultExtension", typeof(DefaultExtension).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Octoller.ASUF.Kernel.Resource.DefaultExtension", typeof(DefaultExtension).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;

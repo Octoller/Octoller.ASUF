@@ -136,7 +136,7 @@
     <value>\Sorted\Other\</value>
   </data>
   <data name="settingFileName" xml:space="preserve">
-    <value>Settings.json</value>
+    <value>\Settings.json</value>
   </data>
   <data name="settingFolderName" xml:space="preserve">
     <value>\Settings\</value>

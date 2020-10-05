@@ -1,10 +1,17 @@
-﻿using System;
+﻿/*
+ * **************************************************************************************************************************
+ * 
+ * Octoller.ASUF
+ * 05.10.2020
+ * 
+ * ************************************************************************************************************************** 
+ */
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Octoller.ASUF.SystemLogic.Processor.Extension {
+namespace Octoller.ASUF.Kernel.Extenson {
     public static class DictionaryExtension {
 
         public static string GetValuePartKey(this Dictionary<string[], string> dictionary, string partKey) {

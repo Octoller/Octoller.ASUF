@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Octoller.ASUF.SystemLogic.Resource {
+namespace Octoller.ASUF.Kernel.Resource {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace Octoller.ASUF.SystemLogic.Resource {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Octoller.ASUF.SystemLogic.Resource.DefaultPath", typeof(DefaultPath).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Octoller.ASUF.Kernel.Resource.DefaultPath", typeof(DefaultPath).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -115,7 +115,7 @@ namespace Octoller.ASUF.SystemLogic.Resource {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Settings.json.
+        ///   Looks up a localized string similar to \Settings.json.
         /// </summary>
         internal static string settingFileName {
             get {

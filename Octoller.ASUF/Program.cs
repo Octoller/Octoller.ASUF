@@ -7,12 +7,13 @@ namespace Octoller.ASUF {
         static void Main(string[] args) {
 
             FolderSettings settings = new FolderSettings();
-            Watcher watcher = new Watcher(settings.SettingUnit);
+            Watcher watcher = new Watcher(settings.GetSettings());
 
             try {
                 watcher.Subscribe();
             } catch (DirectoryNotFoundException ex) {
                 Console.WriteLine(ex.Message);
+                return;
             }
 
             watcher.StartWatching();

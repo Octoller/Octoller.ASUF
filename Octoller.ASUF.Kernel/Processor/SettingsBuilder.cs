@@ -1,31 +1,38 @@
-﻿using Octoller.ASUF.SystemLogic.ServiceObjects;
-using Octoller.ASUF.SystemLogic.ServiceObjects.Extension;
-using Octoller.ASUF.SystemLogic.Processor.Extension;
-using Octoller.ASUF.SystemLogic.Resource;
+﻿/*
+ * **************************************************************************************************************************
+ * 
+ * Octoller.ASUF
+ * 05.10.2020
+ * 
+ * ************************************************************************************************************************** 
+ */
+
+using Octoller.ASUF.Kernel.Extenson;
+using Octoller.ASUF.Kernel.ServiceObjects;
 using System.IO;
 
-using static Octoller.ASUF.SystemLogic.Resource.DefaultExtension;
-using static Octoller.ASUF.SystemLogic.Resource.DefaultPath;
+namespace Octoller.ASUF.Kernel.Processor {
 
-namespace Octoller.ASUF.SystemLogic.Processor {
-    public sealed class FolderSettings {
+    using static Octoller.ASUF.Kernel.Resource.DefaultExtension;
+    using static Octoller.ASUF.Kernel.Resource.DefaultPath;
 
-        private SettingsRW settingsrw;
-        private SettingUnit settingsUnit;
+    public sealed class SettingsBuilder {
+        private SettingsWriRead settingsrw;
+        private SettingsContainer settingsUnit;
 
-        public FolderSettings() {
-            settingsrw = new SettingsRW();
+        public SettingsBuilder() {
+            settingsrw = new SettingsWriRead();
             settingsUnit = settingsrw.ReadSettingFile();
         }
 
-        public SettingUnit GetSettings() {
+        public SettingsContainer GetSettings() {
             if (settingsUnit.Empty()) {
                 SetSettings(CreateDefaultSettings());
             }
             return settingsUnit;
         }
 
-        public void SetSettings(SettingUnit settings) {
+        public void SetSettings(SettingsContainer settings) {
             if (settings.Empty()) {
                 //TODO: Проблема установки дефолтный настроек
                 /* 
@@ -35,13 +42,14 @@ namespace Octoller.ASUF.SystemLogic.Processor {
                  * Думаю решить через методы расширения, которые будут проверять валидность установленного параметра
                  * и при невалидности сбрасывать этот параметр на дефолтные настройки
                  */
-                settingsUnit = CreateDefaultSettings();
+                settings = CreateDefaultSettings();
             }
+            settingsUnit = settings;
             settingsrw.WriteSettingFile(settingsUnit);
             CheckFoldersByPaths(settingsUnit);
         }
 
-        private void CheckFoldersByPaths(SettingUnit settingUnit) {
+        private void CheckFoldersByPaths(SettingsContainer settingUnit) {
             if (!settingUnit.Empty()) {
                 (new DirectoryInfo(settingUnit.WatchedFolder))
                     .CreateDirectoryIfNotFound();
@@ -55,24 +63,23 @@ namespace Octoller.ASUF.SystemLogic.Processor {
             }
         }
 
-        private SettingUnit CreateDefaultSettings() {
+        private SettingsContainer CreateDefaultSettings() {
 
             string root = Directory.GetCurrentDirectory() + defoltRootFolder;
             string temp = root + defoltTempFolder;
 
-            Filter[] filters = new Filter[] {
-                new Filter(root + imageFolder, jpg, jpeg, bmp, png),
-                new Filter(root + docFolder, doc, txt, xls, pdf),
-                new Filter(root + gifFolder, gif)
+            SortFilter[] filters = new SortFilter[] {
+                new SortFilter(root + imageFolder, jpg, jpeg, bmp, png),
+                new SortFilter(root + docFolder, doc, txt, xls, pdf),
+                new SortFilter(root + gifFolder, gif)
             };
 
-            return new SettingUnit() {
+            return new SettingsContainer() {
                 Filter = filters,
                 WatchedFolder = temp,
                 FolderNotFilter = root + otherFolder,
-                ReasonCreating = ReasonCreatingFolder.NewWeek
+                ReasonCreating = ReasonCreatingFolder.OverflowAmount
             };
         }
-
     }
 }

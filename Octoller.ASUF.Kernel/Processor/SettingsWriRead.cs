@@ -1,20 +1,29 @@
-﻿using Octoller.ASUF.SystemLogic.ServiceObjects;
-using Octoller.ASUF.SystemLogic.ServiceObjects.Extension;
+﻿/*
+ * **************************************************************************************************************************
+ * 
+ * Octoller.ASUF
+ * 05.10.2020
+ * 
+ * ************************************************************************************************************************** 
+ */
+
+using Octoller.ASUF.Kernel.Extenson;
+using Octoller.ASUF.Kernel.ServiceObjects;
 using System.IO;
 using System.Text;
 using System.Text.Json;
 
-using static Octoller.ASUF.SystemLogic.Resource.DefaultPath;
+namespace Octoller.ASUF.Kernel.Processor {
 
-namespace Octoller.ASUF.SystemLogic.Processor {
-    public class SettingsRW {
+    using static Octoller.ASUF.Kernel.Resource.DefaultPath;
 
+    public sealed class SettingsWriRead {
         private JsonSerializerOptions jsonOptions;
         private string filePath;
 
-        public SettingsRW() : this (Directory.GetCurrentDirectory()){ /*   */}
+        public SettingsWriRead() : this(Directory.GetCurrentDirectory()) { /*   */}
 
-        private SettingsRW(string fileSettingPath) {
+        private SettingsWriRead(string fileSettingPath) {
             jsonOptions = new JsonSerializerOptions {
                 WriteIndented = true,
                 AllowTrailingCommas = true
@@ -23,21 +32,21 @@ namespace Octoller.ASUF.SystemLogic.Processor {
             filePath = GetFilePath(fileSettingPath);
         }
 
-        public SettingUnit ReadSettingFile() {
+        public SettingsContainer ReadSettingFile() {
             using (var fs = File.Open(filePath, FileMode.OpenOrCreate)) {
                 if (fs.Length > 0) {
                     byte[] fsArray = new byte[fs.Length];
                     fs.Read(fsArray, 0, fsArray.Length);
 
                     string jsonString = Encoding.Default.GetString(fsArray);
-                    return JsonSerializer.Deserialize<SettingUnit>(jsonString, jsonOptions);
+                    return JsonSerializer.Deserialize<SettingsContainer>(jsonString, jsonOptions);
                 } else {
-                    return new SettingUnit();
+                    return new SettingsContainer();
                 }
             }
         }
 
-        public void WriteSettingFile(SettingUnit unit) {
+        public void WriteSettingFile(SettingsContainer unit) {
             if (!unit.Empty()) {
                 using (var fs = File.Open(filePath, FileMode.Open)) {
                     string jsonString = JsonSerializer.Serialize(unit, jsonOptions);
@@ -49,17 +58,16 @@ namespace Octoller.ASUF.SystemLogic.Processor {
 
         private string GetFilePath(string directoryPath) {
             string folder = GetFolder(directoryPath);
-            return folder + settingFolderName;
+            return folder + settingFileName;
         }
 
         private string GetFolder(string directoryPath) {
-            string patch = directoryPath + settingFileName;
+            string patch = directoryPath + settingFolderName;
             if (!Directory.Exists(patch)) {
                 var d = new DirectoryInfo(patch);
                 d.Create();
             }
             return patch;
         }
-
     }
 }
