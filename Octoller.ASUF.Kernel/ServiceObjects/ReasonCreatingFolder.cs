@@ -10,10 +10,10 @@
 namespace Octoller.ASUF.Kernel.ServiceObjects {
     public enum ReasonCreatingFolder {
         OverflowSize, 
-        OverflowAmount,
-        NewYar, 
-        NewMonth, 
-        NewDay, 
-        NewWeek
+        OverflowAmount
+        //NewYar, 
+        //NewMonth, 
+        //NewDay, 
+        //NewWeek
     }
 }

@@ -1,85 +1,92 @@
-﻿/*
- * **************************************************************************************************************************
- * 
- * Octoller.ASUF
- * 05.10.2020
- * 
- * ************************************************************************************************************************** 
- */
-
-using Octoller.ASUF.Kernel.Extenson;
+﻿using Octoller.ASUF.Kernel.Extenson;
+using Octoller.ASUF.Kernel.Processor;
 using Octoller.ASUF.Kernel.ServiceObjects;
+using System;
 using System.IO;
 
 namespace Octoller.ASUF.Kernel.Processor {
-
     using static Octoller.ASUF.Kernel.Resource.DefaultExtension;
     using static Octoller.ASUF.Kernel.Resource.DefaultPath;
 
     public sealed class SettingsBuilder {
-        private SettingsWriRead settingsrw;
-        private SettingsContainer settingsUnit;
+
+        private const ReasonCreatingFolder DEFAULT_REASON
+            = ReasonCreatingFolder.OverflowAmount;
+        private const int DEFAULT_LIMIT = 50;
+
+        private SettingsWriRead settingsWR;
+        private SettingsContainer currentSettings;
+
+        //TODO: Проблема установки дефолтный настроек
+        /* 
+         * Решить проблему при которой, если не задан хотя бы один параметр,
+         * устанавливаются настройки по умолчанию, сбрасывая все параметры
+         * В идеале на дефолтные должен ставится только параметр по усолчанию
+         * Думаю решить через методы расширения, которые будут проверять валидность установленного параметра
+         * и при невалидности сбрасывать этот параметр на дефолтные настройки
+         */
 
         public SettingsBuilder() {
-            settingsrw = new SettingsWriRead();
-            settingsUnit = settingsrw.ReadSettingFile();
-        }
+            
+            settingsWR = new SettingsWriRead();
+            currentSettings = new SettingsContainer();
 
-        public SettingsContainer GetSettings() {
-            if (settingsUnit.Empty()) {
-                SetSettings(CreateDefaultSettings());
-            }
-            return settingsUnit;
-        }
+            if (currentSettings.Empty()) {
 
-        public void SetSettings(SettingsContainer settings) {
-            if (settings.Empty()) {
-                //TODO: Проблема установки дефолтный настроек
-                /* 
-                 * Решить проблему при которой, если не задан хотя бы один параметр,
-                 * устанавливаются настройки по умолчанию, сбрасывая все параметры
-                 * В идеале на дефолтные должен ставится только параметр по усолчанию
-                 * Думаю решить через методы расширения, которые будут проверять валидность установленного параметра
-                 * и при невалидности сбрасывать этот параметр на дефолтные настройки
-                 */
-                settings = CreateDefaultSettings();
-            }
-            settingsUnit = settings;
-            settingsrw.WriteSettingFile(settingsUnit);
-            CheckFoldersByPaths(settingsUnit);
-        }
+                currentSettings = settingsWR.ReadSettingFile();
 
-        private void CheckFoldersByPaths(SettingsContainer settingUnit) {
-            if (!settingUnit.Empty()) {
-                (new DirectoryInfo(settingUnit.WatchedFolder))
-                    .CreateDirectoryIfNotFound();
-                (new DirectoryInfo(settingUnit.FolderNotFilter))
-                    .CreateDirectoryIfNotFound();
+                if (currentSettings.Empty()) {
 
-                foreach (var f in settingUnit.Filter) {
-                    (new DirectoryInfo(f.MovesFolderPatch))
-                        .CreateDirectoryIfNotFound();
+                    currentSettings = CreateDefaultSettings(currentSettings);
+                    settingsWR.WriteSettingFile(currentSettings);
+
                 }
             }
         }
 
-        private SettingsContainer CreateDefaultSettings() {
+        public SettingsContainer GetSettings() =>
+            currentSettings;
 
+        public void SetSettings(SettingsContainer newSettings) {
+            
+            if (newSettings.Empty()) {
+                throw new ArgumentException("Trying to set empty settings.", nameof(newSettings));
+            }
+
+            currentSettings = newSettings;
+            settingsWR.WriteSettingFile(currentSettings);
+        }
+
+        public SettingsContainer CreateDefaultSettings(SettingsContainer settings) {
+            
             string root = Directory.GetCurrentDirectory() + defoltRootFolder;
             string temp = root + defoltTempFolder;
 
-            SortFilter[] filters = new SortFilter[] {
-                new SortFilter(root + imageFolder, jpg, jpeg, bmp, png),
-                new SortFilter(root + docFolder, doc, txt, xls, pdf),
-                new SortFilter(root + gifFolder, gif)
+            settings.Filter = new[] {
+                new SortFilter() {
+                    Extension = new[] { jpg, jpeg, bmp, png },
+                    RootFolderPatch = root + imageFolder,
+                    ReasonCreating = DEFAULT_REASON,
+                    Limit = DEFAULT_LIMIT
+                },
+                new SortFilter() {
+                    Extension = new[] { doc, txt, xls, pdf },
+                    RootFolderPatch = root + docFolder,
+                    ReasonCreating = DEFAULT_REASON,
+                    Limit = DEFAULT_LIMIT
+                },
+                new SortFilter() {
+                    Extension = new[] { gif },
+                    RootFolderPatch = root + gifFolder,
+                    ReasonCreating = DEFAULT_REASON,
+                    Limit = DEFAULT_LIMIT
+                 }
             };
 
-            return new SettingsContainer() {
-                Filter = filters,
-                WatchedFolder = temp,
-                FolderNotFilter = root + otherFolder,
-                ReasonCreating = ReasonCreatingFolder.OverflowAmount
-            };
+            settings.WatchedFolder = temp;
+            settings.FolderNotFilter = root + otherFolder;
+
+            return settings;
         }
     }
 }

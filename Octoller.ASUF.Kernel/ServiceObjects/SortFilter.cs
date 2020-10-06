@@ -7,19 +7,27 @@
  * ************************************************************************************************************************** 
  */
 
+using System.Text.Json.Serialization;
+
 namespace Octoller.ASUF.Kernel.ServiceObjects {
     public sealed class SortFilter {
+
         public string[] Extension {
             get; set;
         }
 
-        public string MovesFolderPatch {
+        public ReasonCreatingFolder ReasonCreating {
+            get; set;
+        } = ReasonCreatingFolder.OverflowAmount;
+
+        public string RootFolderPatch {
             get; set;
         }
 
-        public SortFilter(string movesFolderPath, params string[] extension) {
-            Extension = extension;
-            MovesFolderPatch = movesFolderPath;
+        public int Limit {
+            get; set;
         }
+
+        public SortFilter() { }
     }
 }

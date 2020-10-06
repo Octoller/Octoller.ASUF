@@ -1,91 +1,111 @@
-﻿/*
- * **************************************************************************************************************************
- * 
- * Octoller.ASUF
- * 05.10.2020
- * 
- * ************************************************************************************************************************** 
- */
-
-using Octoller.ASUF.Kernel.Extenson;
+﻿using Octoller.ASUF.Kernel.Processor;
 using Octoller.ASUF.Kernel.ServiceObjects;
-using System;
+using Octoller.ASUF.SystemLogic.Extension;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading;
 
 namespace Octoller.ASUF.Kernel.Processor {
     public sealed class Watcher {
-        private static int OPERATION_INTERVAL = 200;
-        private FileSystemWatcher fileWatcher;
+        
+        private const int OPERATION_INTERVAL = 200;
 
-        private Dictionary<string[], string> sortingFilters =
-            new Dictionary<string[], string>();
+        private List<ITempFilter> filters;
+        private string watchedFolder = string.Empty;
+        //private string folderNotFilter = string.Empty;
 
-        private string folderNotFilter = null;
-        private string watchedFolder = null;
-        private ReasonCreatingFolder reasonCreating;
-        private int limit = 10;
+        private FileSystemWatcher systemWatcher;
+        private FolderHandler folderHandler;
 
-        private bool notSet {
-            get => string.IsNullOrEmpty(fileWatcher.Path);
+        private ITempFilter folderNotFilter;
+
+        public Watcher(SettingsContainer settings) {
+
+            systemWatcher = new FileSystemWatcher();
+            folderHandler = new FolderHandler();
+
+            SetSettings(settings);
+
+            systemWatcher.InternalBufferSize = 63;
+            systemWatcher.NotifyFilter = NotifyFilters.FileName;
+            systemWatcher.Filter = "*.*";
         }
 
-        public Watcher(SettingsContainer settingUnit) {
-            fileWatcher = new FileSystemWatcher();
-            if (!settingUnit.Empty()) {
-                foreach (var f in settingUnit.Filter) {
-                    sortingFilters.Add(f.Extension, f.MovesFolderPatch);
-                }
+        public void Subscrible() {
 
-                reasonCreating = settingUnit.ReasonCreating;
-                watchedFolder = settingUnit.WatchedFolder;
-                fileWatcher.Path = watchedFolder;
-                folderNotFilter = settingUnit.FolderNotFilter;
-                fileWatcher.InternalBufferSize = 64;
+            if (string.IsNullOrEmpty(systemWatcher.Path)) {
+                throw new DirectoryNotFoundException("Tracking paths not set");
             }
 
-            fileWatcher.NotifyFilter = NotifyFilters.FileName;
-            fileWatcher.Filter = "*.*";
-        }
-
-        public void Subscribe() {
-            if (notSet) {
-                throw new DirectoryNotFoundException("Не установлены пути отслеживания");
-            }
-
-            fileWatcher.Created += OnCreate;
+            systemWatcher.Created += OnCreate;
         }
 
         public void StartWatching() =>
-            fileWatcher.EnableRaisingEvents = true;
+            systemWatcher.EnableRaisingEvents = true;
 
         public void StopWatching() =>
-            fileWatcher.EnableRaisingEvents = false;
+            systemWatcher.EnableRaisingEvents = false;
+
+        public void ApplaySettings(SettingsContainer newSettings) {
+
+            StopWatching();
+            SetSettings(newSettings);
+            StartWatching();
+        }
 
         private void OnCreate(object source, FileSystemEventArgs e) {
+
             Thread.Sleep(OPERATION_INTERVAL);
             FileInfo file = new FileInfo(e.FullPath);
 
-            string destination = GetFilterPatch(file.Extension);
-            //destination = reasonCreating.Create(destination, limit);
+            ITempFilter destination = GetRequestPatch(file.Extension);
+            if (destination.isExcess) {
+                destination.LastFolderPatch = folderHandler
+                    .GetNewSubFolder(destination
+                                    .CurrentFilter
+                                    .RootFolderPatch);
+                destination.Counter = 0;
+            }
 
-            (new DirectoryInfo(destination))
-                .CreateDirectoryIfNotFound();
-
-            MovedFile(file, destination);
+            FolderHandler.CreateDirectoryIfNotFound(destination.LastFolderPatch);
+            destination.Counter += destination.CurrentFilter.ReasonCreating.AddCount(file);
+            FileHandler.MovedFile(file, destination.LastFolderPatch + "\\");
         }
 
-        private string GetFilterPatch(string fileExtension) =>
-            sortingFilters.GetValuePartKey(fileExtension) ?? folderNotFilter;
+        private ITempFilter GetRequestPatch(string fileExtension) {
 
-        private void MovedFile(FileInfo file, string destination) {
-            if (File.Exists(destination + file.Name)) {
-                string newFullName = destination + Guid.NewGuid().ToString() + file.Extension;
-                File.Move(file.FullName, newFullName);
-            } else {
-                File.Move(file.FullName, destination + file.Name);
+            foreach (var c in filters) {
+                if (c.CurrentFilter.Extension
+                    .Contains(fileExtension)) {
+
+                    return c;
+                }
             }
+            return folderNotFilter;
+        }
+
+        private void SetSettings(SettingsContainer settings) {
+
+            filters = new List<ITempFilter>();
+            foreach (var f in settings.Filter) {
+
+                string lastFolder =
+                    FolderHandler.GetLastFolder(f.RootFolderPatch);
+
+                filters.Add(new TempFilter() {
+                    CurrentFilter = f,
+                    LastFolderPatch = lastFolder,
+                    Counter = f.ReasonCreating.CurrentCount(lastFolder)
+                });
+            }
+
+            watchedFolder = settings.WatchedFolder;
+            systemWatcher.Path = watchedFolder;
+
+            folderNotFilter = new  TempNotFoundFilter() {
+                LastFolderPatch = settings.FolderNotFilter
+            };
         }
     }
 }

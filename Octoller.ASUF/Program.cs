@@ -1,4 +1,4 @@
-﻿using Octoller.ASUF.SystemLogic.Processor;
+﻿using Octoller.ASUF.Kernel.Processor;
 using System.IO;
 using System;
 
@@ -6,11 +6,11 @@ namespace Octoller.ASUF {
     class Program {
         static void Main(string[] args) {
 
-            FolderSettings settings = new FolderSettings();
+            SettingsBuilder settings = new SettingsBuilder();
             Watcher watcher = new Watcher(settings.GetSettings());
 
             try {
-                watcher.Subscribe();
+                watcher.Subscrible();
             } catch (DirectoryNotFoundException ex) {
                 Console.WriteLine(ex.Message);
                 return;

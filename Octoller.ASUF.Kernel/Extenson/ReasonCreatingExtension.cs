@@ -7,6 +7,7 @@
  * ************************************************************************************************************************** 
  */
 
+using Octoller.ASUF.Kernel.Processor;
 using Octoller.ASUF.Kernel.ServiceObjects;
 using System;
 using System.IO;
@@ -26,5 +27,21 @@ namespace Octoller.ASUF.SystemLogic.Extension {
                 default: return currentPath;
             }
         }
+
+        public static double CurrentCount(this ReasonCreatingFolder reson, string rootPath) =>
+            reson switch {
+                ReasonCreatingFolder.OverflowAmount =>
+                    FolderHandler.GetLenghtFolder(rootPath),
+                ReasonCreatingFolder.OverflowSize =>
+                    FolderHandler.GetSizeFolder(rootPath),
+                _ => 0
+            };
+
+        public static double AddCount(this ReasonCreatingFolder reson, FileInfo file) =>
+            reson switch {
+                ReasonCreatingFolder.OverflowAmount => 1,
+                ReasonCreatingFolder.OverflowSize => (Convert.ToDouble(file.Length) / 1024 / 1024),
+                _ => 0
+            };
     }
 }

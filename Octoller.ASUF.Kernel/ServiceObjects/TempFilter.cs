@@ -2,24 +2,28 @@
  * **************************************************************************************************************************
  * 
  * Octoller.ASUF
- * 05.10.2020
+ * 06.10.2020
  * 
  * ************************************************************************************************************************** 
  */
 
 namespace Octoller.ASUF.Kernel.ServiceObjects {
-    public sealed class SettingsContainer {
+    public sealed class TempFilter : ITempFilter {
 
-        public string WatchedFolder {
+        public SortFilter CurrentFilter {
             get; set;
         }
 
-        public string FolderNotFilter {
+        public string LastFolderPatch {
             get; set;
         }
 
-        public SortFilter[] Filter {
+        public double Counter {
             get; set;
+        }
+
+        public bool isExcess {
+            get => Counter > CurrentFilter.Limit;
         }
     }
 }
