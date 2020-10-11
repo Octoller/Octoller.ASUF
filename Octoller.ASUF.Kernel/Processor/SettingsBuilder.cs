@@ -1,5 +1,13 @@
-﻿using Octoller.ASUF.Kernel.Extenson;
-using Octoller.ASUF.Kernel.Processor;
+﻿/*
+ * **************************************************************************************************************************
+ * 
+ * Octoller.ASUF
+ * 06.10.2020
+ * 
+ * ************************************************************************************************************************** 
+ */
+
+using Octoller.ASUF.Kernel.Extension;
 using Octoller.ASUF.Kernel.ServiceObjects;
 using System;
 using System.IO;

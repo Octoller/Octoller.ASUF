@@ -1,6 +1,14 @@
-﻿using Octoller.ASUF.Kernel.Processor;
+﻿/*
+ * **************************************************************************************************************************
+ * 
+ * Octoller.ASUF
+ * 06.10.2020
+ * 
+ * ************************************************************************************************************************** 
+ */
+
 using Octoller.ASUF.Kernel.ServiceObjects;
-using Octoller.ASUF.SystemLogic.Extension;
+using Octoller.ASUF.Kernel.Extension;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -11,9 +19,9 @@ namespace Octoller.ASUF.Kernel.Processor {
         
         private const int OPERATION_INTERVAL = 200;
 
-        private List<ITempFilter> filters;
         private string watchedFolder = string.Empty;
-        //private string folderNotFilter = string.Empty;
+
+        private Dictionary<string[], ITempFilter> filtersLibrary;
 
         private FileSystemWatcher systemWatcher;
         private FolderHandler folderHandler;
@@ -62,24 +70,21 @@ namespace Octoller.ASUF.Kernel.Processor {
             ITempFilter destination = GetRequestPatch(file.Extension);
             if (destination.isExcess) {
                 destination.LastFolderPatch = folderHandler
-                    .GetNewSubFolder(destination
-                                    .CurrentFilter
-                                    .RootFolderPatch);
+                    .GetNewSubFolder(destination.RootFolderPatch);
                 destination.Counter = 0;
             }
 
             FolderHandler.CreateDirectoryIfNotFound(destination.LastFolderPatch);
-            destination.Counter += destination.CurrentFilter.ReasonCreating.AddCount(file);
+            destination.Counter += destination.ReasonCreating.AddCount(file);
             FileHandler.MovedFile(file, destination.LastFolderPatch + "\\");
         }
 
         private ITempFilter GetRequestPatch(string fileExtension) {
 
-            foreach (var c in filters) {
-                if (c.CurrentFilter.Extension
-                    .Contains(fileExtension)) {
+            foreach (var c in filtersLibrary) {
+                if (c.Key.Contains(fileExtension)) {
 
-                    return c;
+                    return c.Value;
                 }
             }
             return folderNotFilter;
@@ -87,16 +92,17 @@ namespace Octoller.ASUF.Kernel.Processor {
 
         private void SetSettings(SettingsContainer settings) {
 
-            filters = new List<ITempFilter>();
+            filtersLibrary = new Dictionary<string[], ITempFilter>();
+
             foreach (var f in settings.Filter) {
 
                 string lastFolder =
                     FolderHandler.GetLastFolder(f.RootFolderPatch);
 
-                filters.Add(new TempFilter() {
-                    CurrentFilter = f,
+                filtersLibrary.Add(f.Extension, new TempFilter(f.RootFolderPatch, f.Limit) {
                     LastFolderPatch = lastFolder,
-                    Counter = f.ReasonCreating.CurrentCount(lastFolder)
+                    Counter = f.ReasonCreating.CurrentCount(lastFolder),
+                    ReasonCreating = f.ReasonCreating
                 });
             }
 

@@ -2,7 +2,7 @@
  * **************************************************************************************************************************
  * 
  * Octoller.ASUF
- * 06.10.2020
+ * 11.10.2020
  * 
  * ************************************************************************************************************************** 
  */
@@ -10,11 +10,15 @@
 namespace Octoller.ASUF.Kernel.ServiceObjects {
     public sealed class TempFilter : ITempFilter {
 
-        public SortFilter CurrentFilter {
+        public string RootFolderPatch {
             get; set;
         }
 
         public string LastFolderPatch {
+            get; set;
+        }
+
+        public double Limit {
             get; set;
         }
 
@@ -23,7 +27,23 @@ namespace Octoller.ASUF.Kernel.ServiceObjects {
         }
 
         public bool isExcess {
-            get => Counter > CurrentFilter.Limit;
+            get => Counter > Limit;
+        }
+
+        public ReasonCreatingFolder ReasonCreating {
+            get; set;
+        }
+
+        public TempFilter(string root, double limit) {
+
+            if (limit <= 0) {
+                Limit = 200;
+            } else {
+                Limit = limit;
+            }
+
+            RootFolderPatch = root;
+            
         }
     }
 }

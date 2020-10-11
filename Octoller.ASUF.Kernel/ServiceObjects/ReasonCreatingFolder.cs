@@ -9,6 +9,7 @@
 
 namespace Octoller.ASUF.Kernel.ServiceObjects {
     public enum ReasonCreatingFolder {
+        None,
         OverflowSize, 
         OverflowAmount
         //NewYar, 

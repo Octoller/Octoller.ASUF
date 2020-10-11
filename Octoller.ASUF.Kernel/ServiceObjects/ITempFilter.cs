@@ -1,19 +1,38 @@
-﻿namespace Octoller.ASUF.Kernel.ServiceObjects {
+﻿/*
+ * **************************************************************************************************************************
+ * 
+ * Octoller.ASUF
+ * 11.10.2020
+ * 
+ * ************************************************************************************************************************** 
+ */
+
+namespace Octoller.ASUF.Kernel.ServiceObjects {
     public interface ITempFilter {
-        SortFilter CurrentFilter {
+
+
+        public string RootFolderPatch {
             get; set;
         }
 
-        string LastFolderPatch {
+        public string LastFolderPatch {
             get; set;
         }
 
-        double Counter {
+        public double Limit {
             get; set;
         }
 
-        bool isExcess {
+        public double Counter {
+            get; set;
+        }
+
+        public bool isExcess {
             get;
+        }
+
+        public ReasonCreatingFolder ReasonCreating {
+            get; set;
         }
     }
 }
