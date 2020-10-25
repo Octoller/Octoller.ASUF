@@ -7,6 +7,7 @@
  * ************************************************************************************************************************** 
  */
 
+using Octoller.ASUF.Kernel.Extension;
 using System.Text.Json.Serialization;
 
 namespace Octoller.ASUF.Kernel.ServiceObjects {

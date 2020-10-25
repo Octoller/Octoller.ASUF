@@ -94,8 +94,12 @@ namespace Octoller.ASUF.Kernel.Processor {
 
             filtersLibrary = new Dictionary<string[], ITempFilter>();
 
-            foreach (var f in settings.Filter) {
+            if (settings.Empty()) {
+                return;
+            }
 
+            foreach (var f in settings.Filter) {
+                ////BUG: Ошибка при первом запуске, нужно проверить пути к папкам 
                 string lastFolder =
                     FolderHandler.GetLastFolder(f.RootFolderPatch);
 

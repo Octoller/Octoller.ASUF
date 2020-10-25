@@ -11,6 +11,8 @@ using Octoller.ASUF.Kernel.Extension;
 using Octoller.ASUF.Kernel.ServiceObjects;
 using System;
 using System.IO;
+using System.Linq;
+using System.Text;
 
 namespace Octoller.ASUF.Kernel.Processor {
     using static Octoller.ASUF.Kernel.Resource.DefaultExtension;
@@ -25,15 +27,6 @@ namespace Octoller.ASUF.Kernel.Processor {
         private SettingsWriRead settingsWR;
         private SettingsContainer currentSettings;
 
-        //TODO: Проблема установки дефолтный настроек
-        /* 
-         * Решить проблему при которой, если не задан хотя бы один параметр,
-         * устанавливаются настройки по умолчанию, сбрасывая все параметры
-         * В идеале на дефолтные должен ставится только параметр по усолчанию
-         * Думаю решить через методы расширения, которые будут проверять валидность установленного параметра
-         * и при невалидности сбрасывать этот параметр на дефолтные настройки
-         */
-
         public SettingsBuilder() {
             
             settingsWR = new SettingsWriRead();
@@ -43,56 +36,60 @@ namespace Octoller.ASUF.Kernel.Processor {
 
                 currentSettings = settingsWR.ReadSettingFile();
 
-                if (currentSettings.Empty()) {
-
-                    currentSettings = CreateDefaultSettings(currentSettings);
-                    settingsWR.WriteSettingFile(currentSettings);
-
-                }
             }
         }
 
         public SettingsContainer GetSettings() =>
             currentSettings;
 
-        public void SetSettings(SettingsContainer newSettings) {
-            
-            if (newSettings.Empty()) {
-                throw new ArgumentException("Trying to set empty settings.", nameof(newSettings));
-            }
+        public void ReloadSettings() =>
+            currentSettings = settingsWR.ReadSettingFile();
 
-            currentSettings = newSettings;
-            settingsWR.WriteSettingFile(currentSettings);
+        public void SaveSettings(SettingsContainer settings) {
+            if (!settings.Empty()) {
+                settingsWR.WriteSettingFile(settings);
+            }
         }
 
-        public SettingsContainer CreateDefaultSettings(SettingsContainer settings) {
-            
-            string root = Directory.GetCurrentDirectory() + defoltRootFolder;
-            string temp = root + defoltTempFolder;
+        public SettingsContainer CreateDefaultSettings() {
+
+            var settings = new SettingsContainer();
+
+            string root = FolderHandler
+                .CreateDirectoryIfNotFound(Directory.GetCurrentDirectory() + defoltRootFolder);
+
+            string temp = FolderHandler
+                .CreateDirectoryIfNotFound(root + defoltTempFolder);
 
             settings.Filter = new[] {
                 new SortFilter() {
                     Extension = new[] { jpg, jpeg, bmp, png },
-                    RootFolderPatch = root + imageFolder,
+                    RootFolderPatch = FolderHandler
+                        .CreateDirectoryIfNotFound(root + imageFolder),
                     ReasonCreating = DEFAULT_REASON,
                     Limit = DEFAULT_LIMIT
                 },
+
                 new SortFilter() {
                     Extension = new[] { doc, txt, xls, pdf },
-                    RootFolderPatch = root + docFolder,
+                    RootFolderPatch = FolderHandler
+                        .CreateDirectoryIfNotFound(root + docFolder),
                     ReasonCreating = DEFAULT_REASON,
                     Limit = DEFAULT_LIMIT
                 },
+
                 new SortFilter() {
                     Extension = new[] { gif },
-                    RootFolderPatch = root + gifFolder,
+                    RootFolderPatch = FolderHandler
+                        .CreateDirectoryIfNotFound(root + gifFolder),
                     ReasonCreating = DEFAULT_REASON,
                     Limit = DEFAULT_LIMIT
                  }
             };
 
             settings.WatchedFolder = temp;
-            settings.FolderNotFilter = root + otherFolder;
+            settings.FolderNotFilter = FolderHandler
+                .CreateDirectoryIfNotFound(root + otherFolder);
 
             return settings;
         }

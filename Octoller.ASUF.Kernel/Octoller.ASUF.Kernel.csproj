@@ -5,6 +5,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="ServiceObjects\FilterPanel.xaml" />
+    <None Remove="WPFElements\FilterPanel.xaml" />
+  </ItemGroup>
+
+
+
+  <ItemGroup>
     <Compile Update="Resource\DefaultExtension.Designer.cs">
       <DependentUpon>DefaultExtension.resx</DependentUpon>
       <DesignTime>True</DesignTime>
@@ -26,6 +33,17 @@
       <LastGenOutput>DefaultPath.Designer.cs</LastGenOutput>
       <Generator>ResXFileCodeGenerator</Generator>
     </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Include="ServiceObjects\FilterPanel.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WPFElements\FilterPanel.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
 
 </Project>

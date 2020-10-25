@@ -29,11 +29,13 @@ namespace Octoller.ASUF.Kernel.Processor {
             }
         }
 
-        public static void CreateDirectoryIfNotFound(string patch) {
+        public static string CreateDirectoryIfNotFound(string patch) {
 
             if (!Directory.Exists(patch)) {
                 Directory.CreateDirectory(patch);
             }
+
+            return patch;
         }
 
         public static string GetLastFolder(string rootPatch) {

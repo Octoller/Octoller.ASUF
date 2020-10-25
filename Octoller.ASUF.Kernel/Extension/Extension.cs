@@ -11,6 +11,8 @@ using Octoller.ASUF.Kernel.Processor;
 using Octoller.ASUF.Kernel.ServiceObjects;
 using System;
 using System.IO;
+using System.Linq;
+using System.Text;
 
 namespace Octoller.ASUF.Kernel.Extension {
     public static class Extension {
@@ -36,5 +38,14 @@ namespace Octoller.ASUF.Kernel.Extension {
             ((unit.Filter == null || unit.Filter.Length == 0)
             || string.IsNullOrEmpty(unit.WatchedFolder)
             || string.IsNullOrEmpty(unit.FolderNotFilter));
+
+        public static void SplitStringExtension(this SortFilter filter, string input) =>
+            filter.Extension = input.Replace(" ", "")
+            .Split(new[] { ";", }, StringSplitOptions.RemoveEmptyEntries)
+            .Where(s => !string.IsNullOrWhiteSpace(s))
+            .ToArray();
+
+        public static string ExtensionArrayToString(this SortFilter filter) =>
+            String.Join("; ", filter.Extension);
     }
 }

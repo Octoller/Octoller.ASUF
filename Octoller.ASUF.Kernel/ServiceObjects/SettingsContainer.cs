@@ -8,6 +8,7 @@
  */
 
 namespace Octoller.ASUF.Kernel.ServiceObjects {
+
     public sealed class SettingsContainer {
 
         public string WatchedFolder {

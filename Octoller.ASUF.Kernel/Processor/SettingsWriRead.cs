@@ -47,9 +47,7 @@ namespace Octoller.ASUF.Kernel.Processor {
 
                     string jsonString = Encoding.Default.GetString(fsArray);
                     return JsonSerializer.Deserialize<SettingsContainer>(jsonString, jsonOptions);
-                
                 } else {
-
                     return new SettingsContainer();
                 }
             }
@@ -77,6 +75,7 @@ namespace Octoller.ASUF.Kernel.Processor {
         private string GetFolder(string directoryPath) {
 
             string patch = directoryPath + settingFolderName;
+
             if (!Directory.Exists(patch)) {
 
                 var d = new DirectoryInfo(patch);
