@@ -1,4 +1,5 @@
-﻿using Octoller.ASUF.Kernel.ServiceObjects;
+﻿using Octoller.ASUF.Kernel.Extension;
+using Octoller.ASUF.Kernel.ServiceObjects;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -38,7 +39,9 @@ namespace Octoller.ASUF.DesktopApp.Support {
             FolderNotFilter = settingsContainer.FolderNotFilter;
 
             Filters = new ObservableCollection<SortFilter>();
-            Array.ForEach(settingsContainer.Filter, f => Filters.Add(f));
+            if (!settingsContainer.Empty()) {
+                Array.ForEach(settingsContainer.Filter, f => Filters.Add(f));
+            }
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

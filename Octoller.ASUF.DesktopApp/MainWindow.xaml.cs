@@ -30,6 +30,10 @@ namespace Octoller.ASUF.DesktopApp {
             DataContext = new ASUFApplicationViewModel();
         }
 
+        private void _btAddFilter_Click(object sender, RoutedEventArgs e) {
+            
+        }
+
         /*
         private void Button_Click(object sender, RoutedEventArgs e) {
 

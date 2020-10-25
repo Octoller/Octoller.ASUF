@@ -3,6 +3,7 @@
  * 
  * Octoller.ASUF
  * 06.10.2020
+ * 06.10.2020
  * 
  * ************************************************************************************************************************** 
  */
@@ -32,8 +33,6 @@ namespace Octoller.ASUF.Kernel.Processor {
 
             systemWatcher = new FileSystemWatcher();
             folderHandler = new FolderHandler();
-
-            SetSettings(settings);
 
             systemWatcher.InternalBufferSize = 63;
             systemWatcher.NotifyFilter = NotifyFilters.FileName;

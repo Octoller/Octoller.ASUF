@@ -28,8 +28,14 @@ namespace Octoller.ASUF.DesktopApp.Support {
 
     public class ExtensionArrayToStringConvert : IValueConverter {
 
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture) =>
-            (string)String.Join("; ", (string[])value);
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture) {
+            if (value is null) {
+                return string.Empty;
+            }
+
+            return (string)String.Join("; ", (string[])value);
+
+        }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) =>
             null;

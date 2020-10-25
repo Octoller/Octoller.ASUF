@@ -31,9 +31,9 @@
                     </Grid>
                 </Grid>
             </TabItem>
-            <TabItem x:Name="_settingsTabItem" DataContext="{Binding Path=ContainerWrap}" Header="Settings">
+            <TabItem x:Name="_settingsTabItem" Header="Settings">
                 <Grid Background="#FFE5E5E5" VerticalAlignment="Top" Height="388">
-                    <ListBox x:Name="_filtersBox" ItemsSource="{Binding Path=Filters}" Margin="212,6,9,103">
+                    <ListBox x:Name="_filtersBox" DataContext="{Binding Path=ContainerWrap}" ItemsSource="{Binding Path=Filters}" Margin="212,6,9,103">
                         <ListBox.ItemTemplate>
                             <DataTemplate>
                                 <Grid Background="Gray"  UseLayoutRounding="False">
@@ -70,13 +70,13 @@
                     <Label Content="Folder Not Filter:" Margin="0,313,308,0" HorizontalAlignment="Right" VerticalAlignment="Top" Height="18" VerticalContentAlignment="Center" Padding="0,0,0,0"/>
 
                     <TextBox Name="_tbWatchedFolder" Margin="0,290,47,0" TextWrapping="Wrap" Height="18" HorizontalAlignment="Right" VerticalAlignment="Top" Width="256"
-                             Text="{Binding Path=WatchedFolder}" IsEnabled="False"/>
+                             DataContext="{Binding Path=ContainerWrap}" Text="{Binding Path=WatchedFolder}" IsEnabled="False"/>
                     <TextBox Name="_folderNotFilter" Margin="0,313,47,0" TextWrapping="Wrap" Height="18" HorizontalAlignment="Right" VerticalAlignment="Top" Width="256"
-                             Text="{Binding Path=FolderNotFilter}" IsEnabled="False"/>
+                             DataContext="{Binding Path=ContainerWrap}" Text="{Binding Path=FolderNotFilter}" IsEnabled="False"/>
 
                     <Button Name="_btSave" Content="Save settings" HorizontalAlignment="Left" Margin="31,6,0,0" VerticalAlignment="Top" Width="154" Height="34"/>
-                    <Button Name="_btDefault" Content="Default settings" HorizontalAlignment="Left" Margin="31,45,0,0" VerticalAlignment="Top" Width="154" Height="34"/>
-                    <Button Name="_btAddFilter" Content="Add filter" HorizontalAlignment="Left" Margin="31,251,0,0" VerticalAlignment="Top" Width="154" Height="34"/>
+                    <Button Name="_btDefault" Content="Default settings" Command="{Binding Path=DefaultSettings}" HorizontalAlignment="Left" Margin="31,45,0,0" VerticalAlignment="Top" Width="154" Height="34"/>
+                    <Button Name="_btAddFilter" Content="Add filter" Command="{Binding Path=AddCommand}" HorizontalAlignment="Left" Margin="31,251,0,0" VerticalAlignment="Top" Width="154" Height="34" Click="_btAddFilter_Click"/>
                     <Button Name="_btSelectWatched" Content="..." HorizontalAlignment="Right" Margin="0,290,9,0" VerticalAlignment="Top" Width="33" Height="18"/>
                     <Button Name="_btSelectNotFilter" Content="..." HorizontalAlignment="Right" Margin="0,313,9,0" VerticalAlignment="Top" Width="33" Height="18"/>
 

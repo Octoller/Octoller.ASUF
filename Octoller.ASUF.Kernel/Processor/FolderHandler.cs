@@ -39,8 +39,14 @@ namespace Octoller.ASUF.Kernel.Processor {
         }
 
         public static string GetLastFolder(string rootPatch) {
-            
-            var list = (new DirectoryInfo(rootPatch)).GetDirectories();
+
+            DirectoryInfo[] list;
+
+            try {
+                list = (new DirectoryInfo(rootPatch)).GetDirectories();
+            } catch {
+                list = new DirectoryInfo[] { };
+            }
 
             if (list.Any()) {
                 return list.OrderByDescending(di => di.CreationTime)

@@ -1,10 +1,12 @@
 ﻿using Octoller.ASUF.DesktopApp.Support;
+using Octoller.ASUF.DesktopApp.Support.Command;
 using Octoller.ASUF.Kernel.Processor;
 using Octoller.ASUF.Kernel.ServiceObjects;
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Text;
 
@@ -20,6 +22,38 @@ namespace Octoller.ASUF.DesktopApp.View {
             set {
                 containerWrap = value;
                 OnPropertyChanged();
+            }
+        }
+
+        private TestCommand addCommand;
+        public TestCommand AddCommand {
+            get {
+                return addCommand ??
+                    (addCommand = new TestCommand(obj => {
+                        ContainerWrap.Filters.Add(new SortFilter());
+                    }));
+            }
+        }
+
+        private TestCommand defaultSettings;
+        public TestCommand DefaultSettings {
+            get {
+                return defaultSettings ??
+                    (defaultSettings = new TestCommand(obj => {
+                        var tempSettings = settingsBuilder.CreateDefaultSettings();
+                        watcher.StopWatching();
+                        ContainerWrap = new SettingsContainerWrap(tempSettings);
+                        watcher.ApplaySettings(tempSettings);
+
+                        try {
+                            watcher.Subscrible();
+                        } catch {
+                            return;
+                        }
+
+                        settingsBuilder.SaveSettings(tempSettings);
+                        watcher.StartWatching();
+                    }));
             }
         }
 
