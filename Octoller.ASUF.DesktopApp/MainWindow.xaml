@@ -79,7 +79,7 @@
                     <Button x:Name="_btDefault" Content="Default settings" HorizontalAlignment="Left" Margin="31,86,0,0" VerticalAlignment="Top" Width="154" Height="34"
                             Command="{Binding Path=DefaultSettingsCommand}" CommandParameter="{Binding Path=ContainerWrap}"/>
                     <Button x:Name="_btAddFilter" Content="Add filter" HorizontalAlignment="Left" Margin="31,251,0,0" VerticalAlignment="Top" Width="154" Height="34"
-                            Command="{Binding Path=AddCommand}" CommandParameter="{Binding Path=ContainerWrap}"/>
+                            Command="{Binding Path=AddFilterCommand}" CommandParameter="{Binding Path=ContainerWrap}"/>
                     <Button x:Name="_btAplaySave" Content="Aplay and save settings" HorizontalAlignment="Left" Margin="31,8,0,0" VerticalAlignment="Top" Width="154" Height="34"/>
                     <Button x:Name="_btSelectWatched" Content="..." HorizontalAlignment="Right" Margin="0,290,9,0" VerticalAlignment="Top" Width="33" Height="18"/>
                     <Button x:Name="_btSelectNotFilter" Content="..." HorizontalAlignment="Right" Margin="0,313,9,0" VerticalAlignment="Top" Width="33" Height="18"/>

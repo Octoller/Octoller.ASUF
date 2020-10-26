@@ -63,11 +63,9 @@ namespace Octoller.ASUF.Kernel.Processor {
 
             if (!unit.Empty()) {
 
-                using (var fs = File.Open(filePath, FileMode.Open)) {
-
+                using (var fs = File.CreateText(filePath)) {
                     string jsonString = JsonSerializer.Serialize(unit, jsonOptions);
-                    byte[] bytes = Encoding.Default.GetBytes(jsonString);
-                    fs.Write(bytes, 0, bytes.Length);
+                    fs.Write(jsonString);
                 }
             }
         }

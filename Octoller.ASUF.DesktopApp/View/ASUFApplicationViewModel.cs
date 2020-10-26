@@ -27,7 +27,7 @@ namespace Octoller.ASUF.DesktopApp.View {
         private Watcher watcher;
         private SettingsContainerWrap containerWrap;
 
-        private CommandBase addCommand;
+        private CommandBase addFilterCommand;
         private CommandBase defaultSettingsCommand;
         private CommandBase saveSettingsCommand;
 
@@ -39,19 +39,16 @@ namespace Octoller.ASUF.DesktopApp.View {
             }
         }
 
-        public CommandBase AddCommand {
-            get => addCommand ??
-                (addCommand = new AddFilterInListCommand());
+        public CommandBase AddFilterCommand {
+            get => addFilterCommand ??= new AddFilterInListCommand();
         }
 
         public CommandBase DefaultSettingsCommand {
-            get => defaultSettingsCommand ??
-                (defaultSettingsCommand = new SetDefaultSettingsCommand(settingsBuilder));
+            get => defaultSettingsCommand ??= new SetDefaultSettingsCommand(settingsBuilder);
         }
 
         public CommandBase SaveSettingsCommand {
-            get => saveSettingsCommand ??
-                (saveSettingsCommand = new SaveCurrentSettingsCommand(settingsBuilder));
+            get => saveSettingsCommand ??= new SaveCurrentSettingsCommand(settingsBuilder);
         }
 
         public ASUFApplicationViewModel() {
