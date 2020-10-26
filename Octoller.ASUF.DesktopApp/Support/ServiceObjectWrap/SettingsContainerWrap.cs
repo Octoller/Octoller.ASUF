@@ -18,6 +18,7 @@ using Octoller.ASUF.Kernel.ServiceObjects;
 using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Linq;
 using System.Runtime.CompilerServices;
 
 namespace Octoller.ASUF.DesktopApp.Support {
@@ -63,6 +64,11 @@ namespace Octoller.ASUF.DesktopApp.Support {
                 }));
             }
         }
+
+        public bool Empty() =>
+            ((Filters == null || !Filters.Any())
+            || string.IsNullOrEmpty(WatchedFolder)
+            || string.IsNullOrEmpty(FolderNotFilter));
 
         public event PropertyChangedEventHandler PropertyChanged;
         private void OnPropertyChanged([CallerMemberName] string prop = "") =>

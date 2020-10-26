@@ -10,4 +10,13 @@
     <ProjectReference Include="..\Octoller.ASUF.Kernel\Octoller.ASUF.Kernel.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Resources\" />
+    <Folder Include="Support\Dialog\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Ookii.Dialogs" Version="1.1.0" />
+  </ItemGroup>
+
 </Project>

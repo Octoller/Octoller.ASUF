@@ -37,7 +37,6 @@ namespace Octoller.ASUF.DesktopApp.Support.Command {
 
                 var tempContainer = builder.CreateDefaultSettings();
                 WriteInContainerWrap(container, tempContainer);
-                builder.SaveSettings(tempContainer);
             }
         }
 

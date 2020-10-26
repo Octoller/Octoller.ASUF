@@ -7,7 +7,7 @@ namespace Octoller.ASUF {
         static void Main(string[] args) {
 
             SettingsBuilder settings = new SettingsBuilder();
-            Watcher watcher = new Watcher(settings.GetSettings());
+            Watcher watcher = new Watcher();
 
             try {
                 watcher.Subscrible();

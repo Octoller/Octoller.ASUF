@@ -13,6 +13,8 @@
  * ************************************************************************************************************************** 
  */
 
+using System.Diagnostics;
+
 namespace Octoller.ASUF.DesktopApp.Support.Command {
 
     public class AddFilterInListCommand : CommandBase {

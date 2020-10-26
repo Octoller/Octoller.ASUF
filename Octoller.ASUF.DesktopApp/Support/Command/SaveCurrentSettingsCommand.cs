@@ -18,27 +18,54 @@ using Octoller.ASUF.Kernel.ServiceObjects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Windows;
 
 namespace Octoller.ASUF.DesktopApp.Support.Command {
 
     public class SaveCurrentSettingsCommand : CommandBase {
 
         private SettingsBuilder builder;
+        private Watcher watcher;
 
-        public SaveCurrentSettingsCommand(SettingsBuilder builder) {
-
+        public SaveCurrentSettingsCommand(SettingsBuilder builder, Watcher watcher) {
+            this.watcher = watcher;
             this.builder = builder;
         }
 
-        public override bool CanExecute(object parameter) =>
-            parameter != null && parameter is SettingsContainerWrap;
+        public override bool CanExecute(object parameter) {
+
+
+            if (parameter is SettingsContainerWrap container) {
+
+                return container.Empty() ? false : !container.Filters.Any(f => f.IsEmpty);                    
+            }
+
+            return true;
+        }
+            
+            
 
         public override void Execute(object parameter) {
             
             if (parameter is SettingsContainerWrap container) {
 
                 var tempContainer = CreateContainer(container);
-                builder.SaveSettings(tempContainer);
+
+                watcher.StopWatching();
+
+                try {
+
+                    watcher.ApplaySettings(tempContainer);
+                    watcher.Subscrible();
+                    builder.SaveSettings(tempContainer);
+
+                } catch (Exception ex) {
+
+                    MessageBox.Show(ex.StackTrace);
+                    return;
+                }
+
+                watcher.StartWatching();
             }
         }
 

@@ -58,7 +58,13 @@ namespace Octoller.ASUF.DesktopApp.Support {
             }
         }
 
+        public bool IsEmpty {
+            get => extension == null
+                || string.IsNullOrEmpty(RootFolderPatch);
+        }
+
         public event PropertyChangedEventHandler PropertyChanged;
+
         private void OnPropertyChanged([CallerMemberName] string prop = "") =>
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(prop));
     }

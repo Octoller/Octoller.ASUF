@@ -30,6 +30,7 @@ namespace Octoller.ASUF.DesktopApp.View {
         private CommandBase addFilterCommand;
         private CommandBase defaultSettingsCommand;
         private CommandBase saveSettingsCommand;
+        private CommandBase selectPatchFolderCommand;
 
         public SettingsContainerWrap ContainerWrap {
             get => containerWrap;
@@ -51,7 +52,12 @@ namespace Octoller.ASUF.DesktopApp.View {
 
         public CommandBase SaveSettingsCommand {
             get => saveSettingsCommand ??= 
-                new SaveCurrentSettingsCommand(settingsBuilder);
+                new SaveCurrentSettingsCommand(settingsBuilder, watcher);
+        }
+
+        public CommandBase SelectPatchFolderCommand {
+            get => selectPatchFolderCommand ??=
+                new SelectPathFolderCommand((csw, p) => csw.WatchedFolder = p);
         }
 
         public ASUFApplicationViewModel() {
