@@ -1,9 +1,22 @@
-﻿using Octoller.ASUF.Kernel.ServiceObjects;
+﻿/*
+ * **************************************************************************************************************************
+ *     _    ____  _   _ _____ 
+ *    / \  / ___|| | | |  ___|
+ *   / _ \ \___ \| | | | |_   
+ *  / ___ \ ___) | |_| |  _|  
+ * /_/   \_\____/ \___/|_|  
+ * 
+ * Octoller.ASUF
+ * Desctop.WPF
+ * 24.10.2020
+ * 
+ * ************************************************************************************************************************** 
+ */
+
+using Octoller.ASUF.Kernel.ServiceObjects;
 using System;
-using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Text;
 using System.Windows.Data;
 
 namespace Octoller.ASUF.DesktopApp.Support {
@@ -23,7 +36,8 @@ namespace Octoller.ASUF.DesktopApp.Support {
             (int)((ReasonCreatingFolder)value).GetHashCode();
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) =>
-            null;
+            (ReasonCreatingFolder)Enum.GetValues(targetType).GetValue((int)value);
+
     }
 
     public class ExtensionArrayToStringConvert : IValueConverter {
@@ -34,10 +48,12 @@ namespace Octoller.ASUF.DesktopApp.Support {
             }
 
             return (string)String.Join("; ", (string[])value);
-
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) =>
-            null;
+            ((string)value).Replace(" ", "")
+            .Split(new[] { ";", }, StringSplitOptions.RemoveEmptyEntries)
+            .Where(s => !string.IsNullOrWhiteSpace(s))
+            .ToArray();
     }
 }

@@ -1,11 +1,24 @@
-﻿using Octoller.ASUF.Kernel.Extension;
+﻿/*
+ * **************************************************************************************************************************
+ *     _    ____  _   _ _____ 
+ *    / \  / ___|| | | |  ___|
+ *   / _ \ \___ \| | | | |_   
+ *  / ___ \ ___) | |_| |  _|  
+ * /_/   \_\____/ \___/|_|  
+ * 
+ * Octoller.ASUF
+ * Desctop.WPF
+ * 25.10.2020
+ * 
+ * ************************************************************************************************************************** 
+ */
+
+using Octoller.ASUF.Kernel.Extension;
 using Octoller.ASUF.Kernel.ServiceObjects;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using System.Text;
 
 namespace Octoller.ASUF.DesktopApp.Support {
 
@@ -14,7 +27,7 @@ namespace Octoller.ASUF.DesktopApp.Support {
         private string watchedFolder;
         private string folderNotFilter;
 
-        public ObservableCollection<SortFilter> Filters {
+        public ObservableCollection<SortFilterWrap> Filters {
             get; set;
         }
 
@@ -35,12 +48,19 @@ namespace Octoller.ASUF.DesktopApp.Support {
         }
 
         public SettingsContainerWrap(SettingsContainer settingsContainer) {
+
             WatchedFolder = settingsContainer.WatchedFolder;
             FolderNotFilter = settingsContainer.FolderNotFilter;
 
-            Filters = new ObservableCollection<SortFilter>();
+            Filters = new ObservableCollection<SortFilterWrap>();
+
             if (!settingsContainer.Empty()) {
-                Array.ForEach(settingsContainer.Filter, f => Filters.Add(f));
+                Array.ForEach(settingsContainer.Filter, f => Filters.Add(new SortFilterWrap() { 
+                    Extension = f.Extension,
+                    RootFolderPatch = f.RootFolderPatch,
+                    ReasonCreating = f.ReasonCreating,
+                    Limit = f.Limit
+                }));
             }
         }
 

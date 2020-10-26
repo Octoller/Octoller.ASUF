@@ -1,7 +1,13 @@
 ﻿/*
  * **************************************************************************************************************************
+ *     _    ____  _   _ _____ 
+ *    / \  / ___|| | | |  ___|
+ *   / _ \ \___ \| | | | |_   
+ *  / ___ \ ___) | |_| |  _|  
+ * /_/   \_\____/ \___/|_|  
  * 
  * Octoller.ASUF
+ * Library
  * 05.10.2020
  * 
  * ************************************************************************************************************************** 
@@ -12,10 +18,11 @@ using Octoller.ASUF.Kernel.ServiceObjects;
 using System;
 using System.IO;
 using System.Linq;
-using System.Text;
 
 namespace Octoller.ASUF.Kernel.Extension {
+
     public static class Extension {
+
         public static double CurrentCount(this ReasonCreatingFolder reson, string rootPath) =>
             reson switch {
                 ReasonCreatingFolder.OverflowAmount =>

@@ -1,21 +1,35 @@
-﻿using Octoller.ASUF.DesktopApp.Support;
+﻿/*
+ * **************************************************************************************************************************
+ *     _    ____  _   _ _____ 
+ *    / \  / ___|| | | |  ___|
+ *   / _ \ \___ \| | | | |_   
+ *  / ___ \ ___) | |_| |  _|  
+ * /_/   \_\____/ \___/|_|  
+ * 
+ * Octoller.ASUF
+ * Desctop.WPF
+ * 24.10.2020
+ * 
+ * ************************************************************************************************************************** 
+ */
+
+using Octoller.ASUF.DesktopApp.Support;
 using Octoller.ASUF.DesktopApp.Support.Command;
 using Octoller.ASUF.Kernel.Processor;
-using Octoller.ASUF.Kernel.ServiceObjects;
-using System;
-using System.Collections.Generic;
-using System.Collections.Specialized;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Runtime.CompilerServices;
-using System.Text;
 
 namespace Octoller.ASUF.DesktopApp.View {
+
     public class ASUFApplicationViewModel : INotifyPropertyChanged {
 
         private SettingsBuilder settingsBuilder;
         private Watcher watcher;
         private SettingsContainerWrap containerWrap;
+
+        private CommandBase addCommand;
+        private CommandBase defaultSettingsCommand;
+        private CommandBase saveSettingsCommand;
 
         public SettingsContainerWrap ContainerWrap {
             get => containerWrap;
@@ -25,39 +39,23 @@ namespace Octoller.ASUF.DesktopApp.View {
             }
         }
 
-        private TestCommand addCommand;
-        public TestCommand AddCommand {
-            get {
-                return addCommand ??
-                    (addCommand = new TestCommand(obj => {
-                        ContainerWrap.Filters.Add(new SortFilter());
-                    }));
-            }
+        public CommandBase AddCommand {
+            get => addCommand ??
+                (addCommand = new AddFilterInListCommand());
         }
 
-        private TestCommand defaultSettings;
-        public TestCommand DefaultSettings {
-            get {
-                return defaultSettings ??
-                    (defaultSettings = new TestCommand(obj => {
-                        var tempSettings = settingsBuilder.CreateDefaultSettings();
-                        watcher.StopWatching();
-                        ContainerWrap = new SettingsContainerWrap(tempSettings);
-                        watcher.ApplaySettings(tempSettings);
+        public CommandBase DefaultSettingsCommand {
+            get => defaultSettingsCommand ??
+                (defaultSettingsCommand = new SetDefaultSettingsCommand(settingsBuilder));
+        }
 
-                        try {
-                            watcher.Subscrible();
-                        } catch {
-                            return;
-                        }
-
-                        settingsBuilder.SaveSettings(tempSettings);
-                        watcher.StartWatching();
-                    }));
-            }
+        public CommandBase SaveSettingsCommand {
+            get => saveSettingsCommand ??
+                (saveSettingsCommand = new SaveCurrentSettingsCommand(settingsBuilder));
         }
 
         public ASUFApplicationViewModel() {
+
             settingsBuilder = new SettingsBuilder();
             var tempSettings = settingsBuilder.GetSettings();
             containerWrap = new SettingsContainerWrap(tempSettings);

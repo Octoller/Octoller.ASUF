@@ -8,23 +8,24 @@
  * 
  * Octoller.ASUF
  * Desctop.WPF
- * 23.10.2020
+ * 25.10.2020
  * 
  * ************************************************************************************************************************** 
  */
 
-using Octoller.ASUF.DesktopApp.View;
-using System.Windows;
+using System;
+using System.Windows.Input;
 
-namespace Octoller.ASUF.DesktopApp {
+namespace Octoller.ASUF.DesktopApp.Support.Command {
 
-    public partial class MainWindow : Window {
+    public abstract class CommandBase : ICommand {
 
-        public MainWindow() {
+        public abstract bool CanExecute(object parameter);
+        public abstract void Execute(object parameter);
 
-            InitializeComponent();
-
-            DataContext = new ASUFApplicationViewModel();
+        public event EventHandler CanExecuteChanged {
+            add => CommandManager.RequerySuggested += value;
+            remove => CommandManager.RequerySuggested -= value;
         }
     }
 }

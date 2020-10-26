@@ -1,16 +1,20 @@
 ﻿/*
  * **************************************************************************************************************************
+ *     _    ____  _   _ _____ 
+ *    / \  / ___|| | | |  ___|
+ *   / _ \ \___ \| | | | |_   
+ *  / ___ \ ___) | |_| |  _|  
+ * /_/   \_\____/ \___/|_|  
  * 
  * Octoller.ASUF
+ * Library
  * 05.10.2020
  * 
  * ************************************************************************************************************************** 
  */
 
-using Octoller.ASUF.Kernel.Extension;
-using System.Text.Json.Serialization;
-
 namespace Octoller.ASUF.Kernel.ServiceObjects {
+
     public sealed class SortFilter {
 
         public string[] Extension {

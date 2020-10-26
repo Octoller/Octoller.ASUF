@@ -8,23 +8,24 @@
  * 
  * Octoller.ASUF
  * Desctop.WPF
- * 23.10.2020
+ * 26.10.2020
  * 
  * ************************************************************************************************************************** 
  */
 
-using Octoller.ASUF.DesktopApp.View;
-using System.Windows;
+namespace Octoller.ASUF.DesktopApp.Support.Command {
 
-namespace Octoller.ASUF.DesktopApp {
+    public class AddFilterInListCommand : CommandBase {
+        
+        public override bool CanExecute(object parameter) =>
+            parameter != null && parameter is SettingsContainerWrap;
 
-    public partial class MainWindow : Window {
+        public override void Execute(object parameter) {
 
-        public MainWindow() {
+            if (parameter is SettingsContainerWrap settingsContainer) {
 
-            InitializeComponent();
-
-            DataContext = new ASUFApplicationViewModel();
+                settingsContainer.Filters.Add(new SortFilterWrap());
+            }
         }
     }
 }

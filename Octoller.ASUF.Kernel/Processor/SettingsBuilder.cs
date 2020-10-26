@@ -1,7 +1,13 @@
 ﻿/*
  * **************************************************************************************************************************
+ *     _    ____  _   _ _____ 
+ *    / \  / ___|| | | |  ___|
+ *   / _ \ \___ \| | | | |_   
+ *  / ___ \ ___) | |_| |  _|  
+ * /_/   \_\____/ \___/|_|  
  * 
  * Octoller.ASUF
+ * Library
  * 06.10.2020
  * 
  * ************************************************************************************************************************** 
@@ -9,12 +15,10 @@
 
 using Octoller.ASUF.Kernel.Extension;
 using Octoller.ASUF.Kernel.ServiceObjects;
-using System;
 using System.IO;
-using System.Linq;
-using System.Text;
 
 namespace Octoller.ASUF.Kernel.Processor {
+
     using static Octoller.ASUF.Kernel.Resource.DefaultExtension;
     using static Octoller.ASUF.Kernel.Resource.DefaultPath;
 
@@ -46,6 +50,7 @@ namespace Octoller.ASUF.Kernel.Processor {
             currentSettings = settingsWR.ReadSettingFile();
 
         public void SaveSettings(SettingsContainer settings) {
+
             if (!settings.Empty()) {
                 settingsWR.WriteSettingFile(settings);
             }
