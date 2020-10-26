@@ -40,15 +40,18 @@ namespace Octoller.ASUF.DesktopApp.View {
         }
 
         public CommandBase AddFilterCommand {
-            get => addFilterCommand ??= new AddFilterInListCommand();
+            get => addFilterCommand ??=
+                new AddFilterInListCommand();
         }
 
         public CommandBase DefaultSettingsCommand {
-            get => defaultSettingsCommand ??= new SetDefaultSettingsCommand(settingsBuilder);
+            get => defaultSettingsCommand ??= 
+                new SetDefaultSettingsCommand(settingsBuilder);
         }
 
         public CommandBase SaveSettingsCommand {
-            get => saveSettingsCommand ??= new SaveCurrentSettingsCommand(settingsBuilder);
+            get => saveSettingsCommand ??= 
+                new SaveCurrentSettingsCommand(settingsBuilder);
         }
 
         public ASUFApplicationViewModel() {
@@ -56,7 +59,7 @@ namespace Octoller.ASUF.DesktopApp.View {
             settingsBuilder = new SettingsBuilder();
             var tempSettings = settingsBuilder.GetSettings();
             containerWrap = new SettingsContainerWrap(tempSettings);
-            watcher = new Watcher(tempSettings);
+            watcher = new Watcher();
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

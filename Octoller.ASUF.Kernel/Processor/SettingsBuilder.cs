@@ -61,16 +61,16 @@ namespace Octoller.ASUF.Kernel.Processor {
             var settings = new SettingsContainer();
 
             string root = FolderHandler
-                .CreateDirectoryIfNotFound(Directory.GetCurrentDirectory() + defoltRootFolder);
+                .CreateDirectoryIfNotFound(Path.Combine(Directory.GetCurrentDirectory(), defoltRootFolder));
 
             string temp = FolderHandler
-                .CreateDirectoryIfNotFound(root + defoltTempFolder);
+                .CreateDirectoryIfNotFound(Path.Combine(root, defoltTempFolder));
 
             settings.Filter = new[] {
                 new SortFilter() {
                     Extension = new[] { jpg, jpeg, bmp, png },
                     RootFolderPatch = FolderHandler
-                        .CreateDirectoryIfNotFound(root + imageFolder),
+                        .CreateDirectoryIfNotFound(Path.Combine(root, imageFolder)),
                     ReasonCreating = DEFAULT_REASON,
                     Limit = DEFAULT_LIMIT
                 },
@@ -78,7 +78,7 @@ namespace Octoller.ASUF.Kernel.Processor {
                 new SortFilter() {
                     Extension = new[] { doc, txt, xls, pdf },
                     RootFolderPatch = FolderHandler
-                        .CreateDirectoryIfNotFound(root + docFolder),
+                        .CreateDirectoryIfNotFound(Path.Combine(root, docFolder)),
                     ReasonCreating = DEFAULT_REASON,
                     Limit = DEFAULT_LIMIT
                 },
@@ -86,7 +86,7 @@ namespace Octoller.ASUF.Kernel.Processor {
                 new SortFilter() {
                     Extension = new[] { gif },
                     RootFolderPatch = FolderHandler
-                        .CreateDirectoryIfNotFound(root + gifFolder),
+                        .CreateDirectoryIfNotFound(Path.Combine(root, gifFolder)),
                     ReasonCreating = DEFAULT_REASON,
                     Limit = DEFAULT_LIMIT
                  }
@@ -94,7 +94,7 @@ namespace Octoller.ASUF.Kernel.Processor {
 
             settings.WatchedFolder = temp;
             settings.FolderNotFilter = FolderHandler
-                .CreateDirectoryIfNotFound(root + otherFolder);
+                .CreateDirectoryIfNotFound(Path.Combine(root, otherFolder));
 
             return settings;
         }

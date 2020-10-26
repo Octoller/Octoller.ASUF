@@ -19,13 +19,10 @@ using System.IO;
 using System.Linq;
 
 namespace Octoller.ASUF.Kernel.Processor {
+
     public class FolderHandler {
 
-        public Action<SortFilter> newSubFolderCreate;
-
-        public FolderHandler() { } 
-
-        public static void CheckFoldersByPaths(SettingsContainer settings) {
+        public static void CreateFoldersIfNotFound(SettingsContainer settings) {
 
             CreateDirectoryIfNotFound(settings.WatchedFolder);
             CreateDirectoryIfNotFound(settings.FolderNotFilter);
@@ -35,14 +32,8 @@ namespace Octoller.ASUF.Kernel.Processor {
             }
         }
 
-        public static string CreateDirectoryIfNotFound(string patch) {
-
-            if (!Directory.Exists(patch)) {
-                Directory.CreateDirectory(patch);
-            }
-
-            return patch;
-        }
+        public static string CreateDirectoryIfNotFound(string patch) =>
+            (!Directory.Exists(patch)) ? Directory.CreateDirectory(patch).FullName : patch;
 
         public static string GetLastFolder(string rootPatch) {
 
@@ -55,12 +46,13 @@ namespace Octoller.ASUF.Kernel.Processor {
             }
 
             if (list.Any()) {
+
                 return list.OrderByDescending(di => di.CreationTime)
                     .First()
                     .FullName;
             } else {
-                var newFolder = rootPatch + 
-                    DateTime.Now.ToString("dd.MM.yy hh_mm_ss");
+
+                string newFolder = GetNewSubFolder(rootPatch);
                 CreateDirectoryIfNotFound(newFolder);
                 return newFolder;
             }
@@ -69,18 +61,17 @@ namespace Octoller.ASUF.Kernel.Processor {
         public static double GetSizeFolder(string patch) {
 
             long size = 0;
-            (new DirectoryInfo(patch)).GetFiles()
-                .Where(f => true)
+            (new DirectoryInfo(patch)).GetFiles().Where(f => true)
                 .Select(f => (size = size + f.Length));
 
             return Convert.ToDouble(size / Math.Pow(2,20));
         }
 
-
         public static int GetLenghtFolder(string patch) =>
             (new DirectoryInfo(patch)).GetFiles().Count();
 
-        public string GetNewSubFolder(string rootFolderPatch) =>
-            rootFolderPatch + DateTime.Now.ToString("dd.MM.yy hh_mm_ss");
+        public static string GetNewSubFolder(string rootFolderPatch) =>
+           Path.Combine(rootFolderPatch, 
+               DateTime.Now.ToString("dd.MM.yy hh_mm_ss"));
     }
 }

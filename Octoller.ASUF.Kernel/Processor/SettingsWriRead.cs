@@ -73,12 +73,12 @@ namespace Octoller.ASUF.Kernel.Processor {
         private string GetFilePath(string directoryPath) {
 
             string folder = GetFolder(directoryPath);
-            return folder + settingFileName;
+            return Path.Combine(folder, settingFileName);
         }
 
         private string GetFolder(string directoryPath) {
 
-            string patch = directoryPath + settingFolderName;
+            string patch = Path.Combine(directoryPath, settingFolderName);
 
             if (!Directory.Exists(patch)) {
 

@@ -31,14 +31,12 @@ namespace Octoller.ASUF.Kernel.Processor {
         private Dictionary<string[], ITempFilter> filtersLibrary;
 
         private FileSystemWatcher systemWatcher;
-        private FolderHandler folderHandler;
 
         private ITempFilter folderNotFilter;
 
-        public Watcher(SettingsContainer settings) {
+        public Watcher() {
 
             systemWatcher = new FileSystemWatcher();
-            folderHandler = new FolderHandler();
 
             systemWatcher.InternalBufferSize = 63;
             systemWatcher.NotifyFilter = NotifyFilters.FileName;
@@ -74,14 +72,14 @@ namespace Octoller.ASUF.Kernel.Processor {
 
             ITempFilter destination = GetRequestPatch(file.Extension);
             if (destination.isExcess) {
-                destination.LastFolderPatch = folderHandler
+                destination.LastFolderPatch = FolderHandler
                     .GetNewSubFolder(destination.RootFolderPatch);
                 destination.Counter = 0;
             }
 
             FolderHandler.CreateDirectoryIfNotFound(destination.LastFolderPatch);
             destination.Counter += destination.ReasonCreating.AddCount(file);
-            FileHandler.MovedFile(file, destination.LastFolderPatch + "\\");
+            FileHandler.MovedFile(file, Path.Combine(destination.LastFolderPatch));
         }
 
         private ITempFilter GetRequestPatch(string fileExtension) {

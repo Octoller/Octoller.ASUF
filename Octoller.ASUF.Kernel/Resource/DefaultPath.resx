@@ -118,27 +118,27 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="defoltRootFolder" xml:space="preserve">
-    <value>\Download</value>
+    <value>Download</value>
   </data>
   <data name="defoltTempFolder" xml:space="preserve">
-    <value>\Temp</value>
+    <value>Temp</value>
   </data>
   <data name="docFolder" xml:space="preserve">
-    <value>\Sorted\Documents\</value>
+    <value>Sorted\Documents</value>
   </data>
   <data name="gifFolder" xml:space="preserve">
-    <value>\Sorted\Gif\</value>
+    <value>Sorted\Gif</value>
   </data>
   <data name="imageFolder" xml:space="preserve">
-    <value>\Sorted\Image\</value>
+    <value>Sorted\Image</value>
   </data>
   <data name="otherFolder" xml:space="preserve">
-    <value>\Sorted\Other\</value>
+    <value>Sorted\Other</value>
   </data>
   <data name="settingFileName" xml:space="preserve">
-    <value>\Settings.json</value>
+    <value>Settings.json</value>
   </data>
   <data name="settingFolderName" xml:space="preserve">
-    <value>\Settings\</value>
+    <value>Settings</value>
   </data>
 </root>
