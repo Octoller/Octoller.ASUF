@@ -25,12 +25,9 @@ namespace Octoller.ASUF.DesktopApp.View {
 
         private SettingsBuilder settingsBuilder;
         private Watcher watcher;
-        private SettingsContainerWrap containerWrap;
 
-        private CommandBase addFilterCommand;
-        private CommandBase defaultSettingsCommand;
-        private CommandBase saveSettingsCommand;
-        private CommandBase selectPatchFolderCommand;
+        private SettingsContainerWrap containerWrap;
+        private CommandController commandController;
 
         public SettingsContainerWrap ContainerWrap {
             get => containerWrap;
@@ -40,24 +37,9 @@ namespace Octoller.ASUF.DesktopApp.View {
             }
         }
 
-        public CommandBase AddFilterCommand {
-            get => addFilterCommand ??=
-                new AddFilterInListCommand();
-        }
-
-        public CommandBase DefaultSettingsCommand {
-            get => defaultSettingsCommand ??= 
-                new SetDefaultSettingsCommand(settingsBuilder);
-        }
-
-        public CommandBase SaveSettingsCommand {
-            get => saveSettingsCommand ??= 
-                new SaveCurrentSettingsCommand(settingsBuilder, watcher);
-        }
-
-        public CommandBase SelectPatchFolderCommand {
-            get => selectPatchFolderCommand ??=
-                new SelectPathFolderCommand((csw, p) => csw.WatchedFolder = p);
+        public CommandController CommandController {
+            get => commandController ??=
+                new CommandController(settingsBuilder, watcher);
         }
 
         public ASUFApplicationViewModel() {
@@ -69,6 +51,7 @@ namespace Octoller.ASUF.DesktopApp.View {
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
+
         private void OnPropertyChanged([CallerMemberName]string prop = "") {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(prop));
         }

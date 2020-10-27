@@ -27,6 +27,7 @@ namespace Octoller.ASUF.DesktopApp.Support {
 
         private string watchedFolder;
         private string folderNotFilter;
+        private SortFilterWrap selectedFilter;
 
         public ObservableCollection<SortFilterWrap> Filters {
             get; set;
@@ -48,6 +49,14 @@ namespace Octoller.ASUF.DesktopApp.Support {
             }
         }
 
+        public SortFilterWrap SelectedFilter {
+            get => selectedFilter;
+            set {
+                selectedFilter = value;
+                OnPropertyChanged();
+            }
+        }
+
         public SettingsContainerWrap(SettingsContainer settingsContainer) {
 
             WatchedFolder = settingsContainer.WatchedFolder;
@@ -56,12 +65,13 @@ namespace Octoller.ASUF.DesktopApp.Support {
             Filters = new ObservableCollection<SortFilterWrap>();
 
             if (!settingsContainer.Empty()) {
-                Array.ForEach(settingsContainer.Filter, f => Filters.Add(new SortFilterWrap() { 
-                    Extension = f.Extension,
-                    RootFolderPatch = f.RootFolderPatch,
-                    ReasonCreating = f.ReasonCreating,
-                    Limit = f.Limit
-                }));
+                Array.ForEach(settingsContainer.Filter, 
+                    f => Filters.Add(new SortFilterWrap() { 
+                        Extension = f.Extension,
+                        RootFolderPatch = f.RootFolderPatch,
+                        ReasonCreating = f.ReasonCreating,
+                        Limit = f.Limit
+                    }));
             }
         }
 
@@ -71,7 +81,8 @@ namespace Octoller.ASUF.DesktopApp.Support {
             || string.IsNullOrEmpty(FolderNotFilter));
 
         public event PropertyChangedEventHandler PropertyChanged;
-        private void OnPropertyChanged([CallerMemberName] string prop = "") =>
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(prop));
+        private void OnPropertyChanged([CallerMemberName] string prop = "") {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(prop));
+        }
     }
 }

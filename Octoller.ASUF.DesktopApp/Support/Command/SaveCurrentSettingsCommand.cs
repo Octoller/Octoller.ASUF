@@ -28,6 +28,7 @@ namespace Octoller.ASUF.DesktopApp.Support.Command {
         private Watcher watcher;
 
         public SaveCurrentSettingsCommand(SettingsBuilder builder, Watcher watcher) {
+
             this.watcher = watcher;
             this.builder = builder;
         }

@@ -43,6 +43,7 @@ namespace Octoller.ASUF.DesktopApp.Support {
     public class ExtensionArrayToStringConvert : IValueConverter {
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture) {
+
             if (value is null) {
                 return string.Empty;
             }

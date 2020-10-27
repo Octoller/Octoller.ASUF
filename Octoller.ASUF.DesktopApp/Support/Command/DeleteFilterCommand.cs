@@ -7,24 +7,33 @@
  * /_/   \_\____/ \___/|_|  
  * 
  * Octoller.ASUF
- * Desctop.WPF
- * 26.10.2020
+ * Library
+ * 27.10.2020
  * 
  * ************************************************************************************************************************** 
  */
 
 namespace Octoller.ASUF.DesktopApp.Support.Command {
 
-    public class AddFilterInListCommand : CommandBase {
-        
-        public override bool CanExecute(object parameter) =>
-            parameter != null && parameter is SettingsContainerWrap;
+    public class DeleteFilterCommand : CommandBase {
+
+        public override bool CanExecute(object parameter) {
+
+            if (parameter is SettingsContainerWrap container) {
+
+                if (container.SelectedFilter != null) {
+
+                    return true;
+                }
+            }
+            return false;
+        }        
 
         public override void Execute(object parameter) {
 
-            if (parameter is SettingsContainerWrap settingsContainer) {
+            if (parameter is SettingsContainerWrap container) {
 
-                settingsContainer.Filters.Add(new SortFilterWrap());
+                container.Filters.Remove(container.SelectedFilter);
             }
         }
     }

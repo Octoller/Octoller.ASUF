@@ -24,7 +24,7 @@ namespace Octoller.ASUF.DesktopApp {
 
             InitializeComponent();
 
-            DataContext = new ASUFApplicationViewModel();
+            this.DataContext = new ASUFApplicationViewModel();
         }
     }
 }
