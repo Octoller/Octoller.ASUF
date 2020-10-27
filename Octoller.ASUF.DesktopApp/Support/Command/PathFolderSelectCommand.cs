@@ -25,12 +25,16 @@ namespace Octoller.ASUF.DesktopApp.Support.Command {
             this.write = write;
         }
 
-        public override bool CanExecute(object parameter) =>
-            parameter != null && parameter is T;
+        public override bool CanExecute(object parameter) {
+
+            if (parameter is SortFilterWrap) {
+                return true;
+            }
+            return true;
+        }
 
 
         public override void Execute(object parameter) {
-            Debug.Print("---");
             var dialog = new Ookii.Dialogs.Wpf.VistaFolderBrowserDialog();
             dialog.RootFolder = Environment.SpecialFolder.MyDocuments;
 
