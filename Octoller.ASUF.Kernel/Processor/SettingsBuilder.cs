@@ -39,7 +39,6 @@ namespace Octoller.ASUF.Kernel.Processor {
             if (currentSettings.Empty()) {
 
                 currentSettings = settingsWR.ReadSettingFile();
-
             }
         }
 
@@ -66,11 +65,20 @@ namespace Octoller.ASUF.Kernel.Processor {
             string temp = FolderHandler
                 .CreateDirectoryIfNotFound(Path.Combine(root, defoltTempFolder));
 
+            string sorted = FolderHandler.
+                CreateDirectoryIfNotFound(Path.Combine(root, sortedRootFolder));
+
+            /*
+            FolderHandler.CreateDirectoryIfNotFound(Path.Combine(sorted, imageFolder));
+            FolderHandler.CreateDirectoryIfNotFound(Path.Combine(sorted, docFolder));
+            FolderHandler.CreateDirectoryIfNotFound(Path.Combine(sorted, gifFolder));
+            */
+
             settings.Filter = new[] {
                 new SortFilter() {
                     Extension = new[] { jpg, jpeg, bmp, png },
                     RootFolderPatch = FolderHandler
-                        .CreateDirectoryIfNotFound(Path.Combine(root, imageFolder)),
+                        .CreateDirectoryIfNotFound(Path.Combine(sorted, imageFolder)),
                     ReasonCreating = DEFAULT_REASON,
                     Limit = DEFAULT_LIMIT
                 },
@@ -78,7 +86,7 @@ namespace Octoller.ASUF.Kernel.Processor {
                 new SortFilter() {
                     Extension = new[] { doc, txt, xls, pdf },
                     RootFolderPatch = FolderHandler
-                        .CreateDirectoryIfNotFound(Path.Combine(root, docFolder)),
+                        .CreateDirectoryIfNotFound(Path.Combine(sorted, docFolder)),
                     ReasonCreating = DEFAULT_REASON,
                     Limit = DEFAULT_LIMIT
                 },
@@ -86,7 +94,7 @@ namespace Octoller.ASUF.Kernel.Processor {
                 new SortFilter() {
                     Extension = new[] { gif },
                     RootFolderPatch = FolderHandler
-                        .CreateDirectoryIfNotFound(Path.Combine(root, gifFolder)),
+                        .CreateDirectoryIfNotFound(Path.Combine(sorted, gifFolder)),
                     ReasonCreating = DEFAULT_REASON,
                     Limit = DEFAULT_LIMIT
                  }
@@ -94,7 +102,7 @@ namespace Octoller.ASUF.Kernel.Processor {
 
             settings.WatchedFolder = temp;
             settings.FolderNotFilter = FolderHandler
-                .CreateDirectoryIfNotFound(Path.Combine(root, otherFolder));
+                .CreateDirectoryIfNotFound(Path.Combine(sorted, otherFolder));
 
             return settings;
         }

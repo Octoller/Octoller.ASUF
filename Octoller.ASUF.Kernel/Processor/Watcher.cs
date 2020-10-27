@@ -116,7 +116,7 @@ namespace Octoller.ASUF.Kernel.Processor {
             watchedFolder = settings.WatchedFolder;
             systemWatcher.Path = watchedFolder;
 
-            folderNotFilter = new  TempNotFoundFilter() {
+            folderNotFilter = new TempNotFoundFilter() {
                 LastFolderPatch = settings.FolderNotFilter
             };
         }

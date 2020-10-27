@@ -124,21 +124,24 @@
     <value>Temp</value>
   </data>
   <data name="docFolder" xml:space="preserve">
-    <value>Sorted\Documents</value>
+    <value>Documents</value>
   </data>
   <data name="gifFolder" xml:space="preserve">
-    <value>Sorted\Gif</value>
+    <value>Gif</value>
   </data>
   <data name="imageFolder" xml:space="preserve">
-    <value>Sorted\Image</value>
+    <value>Image</value>
   </data>
   <data name="otherFolder" xml:space="preserve">
-    <value>Sorted\Other</value>
+    <value>Other</value>
   </data>
   <data name="settingFileName" xml:space="preserve">
     <value>Settings.json</value>
   </data>
   <data name="settingFolderName" xml:space="preserve">
     <value>Settings</value>
+  </data>
+  <data name="sortedRootFolder" xml:space="preserve">
+    <value>Sorted</value>
   </data>
 </root>

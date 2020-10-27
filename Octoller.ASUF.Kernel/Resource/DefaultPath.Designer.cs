@@ -79,7 +79,7 @@ namespace Octoller.ASUF.Kernel.Resource {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Sorted\Documents.
+        ///   Looks up a localized string similar to Documents.
         /// </summary>
         internal static string docFolder {
             get {
@@ -88,7 +88,7 @@ namespace Octoller.ASUF.Kernel.Resource {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Sorted\Gif.
+        ///   Looks up a localized string similar to Gif.
         /// </summary>
         internal static string gifFolder {
             get {
@@ -97,7 +97,7 @@ namespace Octoller.ASUF.Kernel.Resource {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Sorted\Image.
+        ///   Looks up a localized string similar to Image.
         /// </summary>
         internal static string imageFolder {
             get {
@@ -106,7 +106,7 @@ namespace Octoller.ASUF.Kernel.Resource {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Sorted\Other.
+        ///   Looks up a localized string similar to Other.
         /// </summary>
         internal static string otherFolder {
             get {
@@ -129,6 +129,15 @@ namespace Octoller.ASUF.Kernel.Resource {
         internal static string settingFolderName {
             get {
                 return ResourceManager.GetString("settingFolderName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sorted.
+        /// </summary>
+        internal static string sortedRootFolder {
+            get {
+                return ResourceManager.GetString("sortedRootFolder", resourceCulture);
             }
         }
     }

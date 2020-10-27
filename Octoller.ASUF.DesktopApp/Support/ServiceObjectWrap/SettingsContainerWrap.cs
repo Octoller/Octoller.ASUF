@@ -33,6 +33,14 @@ namespace Octoller.ASUF.DesktopApp.Support {
             get; set;
         }
 
+        public SortFilterWrap SelectedFilter {
+            get => selectedFilter;
+            set {
+                selectedFilter = value;
+                OnPropertyChanged();
+            }
+        }
+
         public string WatchedFolder {
             get => watchedFolder;
             set {
@@ -45,14 +53,6 @@ namespace Octoller.ASUF.DesktopApp.Support {
             get => folderNotFilter;
             set {
                 folderNotFilter = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public SortFilterWrap SelectedFilter {
-            get => selectedFilter;
-            set {
-                selectedFilter = value;
                 OnPropertyChanged();
             }
         }

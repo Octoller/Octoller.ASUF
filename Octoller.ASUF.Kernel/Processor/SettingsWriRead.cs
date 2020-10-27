@@ -27,24 +27,19 @@ namespace Octoller.ASUF.Kernel.Processor {
     public sealed class SettingsWriRead {
 
         private JsonSerializerOptions jsonOptions;
-        private string filePath;
 
-        public SettingsWriRead() : this(Directory.GetCurrentDirectory()) 
-            { /*   */}
-
-        private SettingsWriRead(string fileSettingPath) {
+        public SettingsWriRead() {
 
             jsonOptions = new JsonSerializerOptions {
                 WriteIndented = true,
                 AllowTrailingCommas = true
             };
 
-            filePath = GetFilePath(fileSettingPath);
         }
 
         public SettingsContainer ReadSettingFile() {
 
-            using (var fs = File.Open(filePath, FileMode.OpenOrCreate)) {
+            using (var fs = File.Open(GetFilePath(), FileMode.OpenOrCreate)) {
 
                 if (fs.Length > 0) {
 
@@ -63,16 +58,16 @@ namespace Octoller.ASUF.Kernel.Processor {
 
             if (!unit.Empty()) {
 
-                using (var fs = File.CreateText(filePath)) {
+                using (var fs = File.CreateText(GetFilePath())) {
                     string jsonString = JsonSerializer.Serialize(unit, jsonOptions);
                     fs.Write(jsonString);
                 }
             }
         }
 
-        private string GetFilePath(string directoryPath) {
+        private string GetFilePath() {
 
-            string folder = GetFolder(directoryPath);
+            string folder = GetFolder(Directory.GetCurrentDirectory());
             return Path.Combine(folder, settingFileName);
         }
 
