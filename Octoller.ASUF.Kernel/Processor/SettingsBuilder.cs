@@ -35,18 +35,24 @@ namespace Octoller.ASUF.Kernel.Processor {
             
             settingsWR = new SettingsWriRead();
             currentSettings = new SettingsContainer();
-
-            if (currentSettings.Empty()) {
-
-                currentSettings = settingsWR.ReadSettingFile();
-            }
         }
 
-        public SettingsContainer GetSettings() =>
-            currentSettings;
+        public SettingsContainer GetSettings() {
+            
+            if (currentSettings is null) {
+                currentSettings = new SettingsContainer();
+            }
 
-        public void ReloadSettings() =>
-            currentSettings = settingsWR.ReadSettingFile();
+            if (currentSettings.Empty()) {
+                currentSettings = settingsWR.ReadSettingFile();
+                if (currentSettings.Empty()) {
+                    currentSettings = CreateDefaultSettings();
+                    settingsWR.WriteSettingFile(currentSettings);
+                }
+            }
+
+            return currentSettings;
+        }
 
         public void SaveSettings(SettingsContainer settings) {
 
@@ -54,6 +60,9 @@ namespace Octoller.ASUF.Kernel.Processor {
                 settingsWR.WriteSettingFile(settings);
             }
         }
+
+        public void ReloadSettings() =>
+            currentSettings = settingsWR.ReadSettingFile();
 
         public SettingsContainer CreateDefaultSettings() {
 

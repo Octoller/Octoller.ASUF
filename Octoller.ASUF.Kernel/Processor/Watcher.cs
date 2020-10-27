@@ -19,6 +19,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading;
+using System;
+using System.Diagnostics;
 
 namespace Octoller.ASUF.Kernel.Processor {
 
@@ -27,12 +29,14 @@ namespace Octoller.ASUF.Kernel.Processor {
         private const int OPERATION_INTERVAL = 200;
 
         private string watchedFolder = string.Empty;
-
         private Dictionary<string[], ITempFilter> filtersLibrary;
-
         private FileSystemWatcher systemWatcher;
 
         private ITempFilter folderNotFilter;
+
+        public bool IsWatcing {
+            get => systemWatcher.EnableRaisingEvents;
+        }
 
         public Watcher() {
 
@@ -52,17 +56,40 @@ namespace Octoller.ASUF.Kernel.Processor {
             systemWatcher.Created += OnCreate;
         }
 
+        public void UnSubscrible() =>
+            systemWatcher.Created -= OnCreate;
+
         public void StartWatching() =>
             systemWatcher.EnableRaisingEvents = true;
 
         public void StopWatching() =>
             systemWatcher.EnableRaisingEvents = false;
 
-        public void ApplaySettings(SettingsContainer newSettings) {
+        public void ApplySettings(SettingsContainer settings) {
 
-            StopWatching();
-            SetSettings(newSettings);
-            StartWatching();
+            filtersLibrary = new Dictionary<string[], ITempFilter>();
+
+            if (settings.Empty()) {
+                throw new ArgumentException("Unable to apply empty settings object.", nameof(settings));
+            }
+
+            foreach (var f in settings.Filter) {
+                string lastFolder =
+                    FolderHandler.GetLastFolder(f.RootFolderPatch);
+
+                filtersLibrary.Add(f.Extension, new TempFilter(f.RootFolderPatch, f.Limit) {
+                    LastFolderPatch = lastFolder,
+                    Counter = f.ReasonCreating.CurrentCount(lastFolder),
+                    ReasonCreating = f.ReasonCreating
+                });
+            }
+
+            watchedFolder = settings.WatchedFolder;
+            systemWatcher.Path = watchedFolder;
+
+            folderNotFilter = new TempNotFoundFilter() {
+                LastFolderPatch = settings.FolderNotFilter
+            };
         }
 
         private void OnCreate(object source, FileSystemEventArgs e) {
@@ -91,34 +118,6 @@ namespace Octoller.ASUF.Kernel.Processor {
                 }
             }
             return folderNotFilter;
-        }
-
-        private void SetSettings(SettingsContainer settings) {
-
-            filtersLibrary = new Dictionary<string[], ITempFilter>();
-
-            if (settings.Empty()) {
-                return;
-            }
-
-            foreach (var f in settings.Filter) {
-                ////BUG: Ошибка при первом запуске, нужно проверить пути к папкам 
-                string lastFolder =
-                    FolderHandler.GetLastFolder(f.RootFolderPatch);
-
-                filtersLibrary.Add(f.Extension, new TempFilter(f.RootFolderPatch, f.Limit) {
-                    LastFolderPatch = lastFolder,
-                    Counter = f.ReasonCreating.CurrentCount(lastFolder),
-                    ReasonCreating = f.ReasonCreating
-                });
-            }
-
-            watchedFolder = settings.WatchedFolder;
-            systemWatcher.Path = watchedFolder;
-
-            folderNotFilter = new TempNotFoundFilter() {
-                LastFolderPatch = settings.FolderNotFilter
-            };
         }
     }
 }

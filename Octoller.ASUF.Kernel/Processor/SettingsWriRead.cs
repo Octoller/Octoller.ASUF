@@ -13,7 +13,6 @@
  * ************************************************************************************************************************** 
  */
 
-
 using Octoller.ASUF.Kernel.ServiceObjects;
 using Octoller.ASUF.Kernel.Extension;
 using System.IO;
@@ -34,7 +33,6 @@ namespace Octoller.ASUF.Kernel.Processor {
                 WriteIndented = true,
                 AllowTrailingCommas = true
             };
-
         }
 
         public SettingsContainer ReadSettingFile() {

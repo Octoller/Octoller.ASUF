@@ -37,14 +37,11 @@ namespace Octoller.ASUF.DesktopApp.Support.Command {
 
 
             if (parameter is SettingsContainerWrap container) {
+                return container.Empty() ? false : !container.Filters.Any(f => f.IsEmpty);
+            } 
 
-                return container.Empty() ? false : !container.Filters.Any(f => f.IsEmpty);                    
-            }
-
-            return true;
+            return false;
         }
-            
-            
 
         public override void Execute(object parameter) {
             
@@ -52,21 +49,28 @@ namespace Octoller.ASUF.DesktopApp.Support.Command {
 
                 var tempContainer = CreateContainer(container);
 
-                watcher.StopWatching();
-
                 try {
 
-                    watcher.ApplaySettings(tempContainer);
+                    bool restart = false;
+
+                    if (watcher.IsWatcing) {
+                        watcher.StopWatching();
+                        restart = true;
+                    }
+
+                    watcher.UnSubscrible();
+                    watcher.ApplySettings(tempContainer);
                     watcher.Subscrible();
-                    builder.SaveSettings(tempContainer);
+
+                    if (restart) {
+                       watcher.StartWatching();
+                    }
 
                 } catch (Exception ex) {
 
-                    MessageBox.Show(ex.StackTrace);
+                    MessageBox.Show(ex.Message);
                     return;
                 }
-
-                watcher.StartWatching();
             }
         }
 
