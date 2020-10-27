@@ -77,12 +77,6 @@ namespace Octoller.ASUF.Kernel.Processor {
             string sorted = FolderHandler.
                 CreateDirectoryIfNotFound(Path.Combine(root, sortedRootFolder));
 
-            /*
-            FolderHandler.CreateDirectoryIfNotFound(Path.Combine(sorted, imageFolder));
-            FolderHandler.CreateDirectoryIfNotFound(Path.Combine(sorted, docFolder));
-            FolderHandler.CreateDirectoryIfNotFound(Path.Combine(sorted, gifFolder));
-            */
-
             settings.Filter = new[] {
                 new SortFilter() {
                     Extension = new[] { jpg, jpeg, bmp, png },

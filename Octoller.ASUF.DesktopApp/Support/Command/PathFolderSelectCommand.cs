@@ -17,33 +17,34 @@ using System;
 using System.Diagnostics;
 
 namespace Octoller.ASUF.DesktopApp.Support.Command {
-    public class PathFolderSelectCommand : CommandBase {
+    public class PathFolderSelectCommand<T> : CommandBase {
 
-        private Action<SettingsContainerWrap, string> write;
+        private Action<T, string> write;
 
-        public PathFolderSelectCommand(Action<SettingsContainerWrap, string> write) {
+        public PathFolderSelectCommand(Action<T, string> write) {
             this.write = write;
         }
 
         public override bool CanExecute(object parameter) =>
-            parameter != null && parameter is SettingsContainerWrap;
+            parameter != null && parameter is T;
 
 
         public override void Execute(object parameter) {
+            Debug.Print("---");
+            var dialog = new Ookii.Dialogs.Wpf.VistaFolderBrowserDialog();
+            dialog.RootFolder = Environment.SpecialFolder.MyDocuments;
 
-            if (parameter is SettingsContainerWrap container) {
+            if (parameter is T container) {
 
                 // Временный вариант через стороннюю библиотеку Ookii.Dialog, 
                 // в будущем написать своё решение диалогового окна выбора папки
-
-                var dialog = new Ookii.Dialogs.Wpf.VistaFolderBrowserDialog();
-                dialog.RootFolder = Environment.SpecialFolder.MyDocuments;
 
                 if (dialog.ShowDialog().GetValueOrDefault()) {
 
                     write(container, dialog.SelectedPath);
                 }
             }
+
         }
     }
 }

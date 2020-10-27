@@ -13,6 +13,7 @@
  * ************************************************************************************************************************** 
  */
 
+using Octoller.ASUF.DesktopApp.Support.Command;
 using Octoller.ASUF.Kernel.Extension;
 using Octoller.ASUF.Kernel.ServiceObjects;
 using System;

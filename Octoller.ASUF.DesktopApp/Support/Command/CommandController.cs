@@ -27,6 +27,8 @@ namespace Octoller.ASUF.DesktopApp.Support.Command {
 
         private CommandBase watchedFolderSelectCommand;
         private CommandBase folderNotFilterSelectCommand;
+        private CommandBase filterRootFolderSelectCommand;
+
 
         private CommandBase deleteFilterCommand;
 
@@ -47,12 +49,17 @@ namespace Octoller.ASUF.DesktopApp.Support.Command {
 
         public CommandBase WatchedFolderSelectCommand {
             get => watchedFolderSelectCommand ??=
-                new PathFolderSelectCommand((scw, t) => scw.WatchedFolder = t);
+                new PathFolderSelectCommand<SettingsContainerWrap>((scw, t) => scw.WatchedFolder = t);
         }
 
         public CommandBase FolderNotFilterSelectCommand {
             get => folderNotFilterSelectCommand ??=
-                new PathFolderSelectCommand((scw, t) => scw.FolderNotFilter = t);
+                new PathFolderSelectCommand<SettingsContainerWrap>((scw, t) => scw.FolderNotFilter = t);
+        }
+
+        public CommandBase FilterRootFolderSelectCommand {
+            get => filterRootFolderSelectCommand ??=
+                new PathFolderSelectCommand<SortFilterWrap>((sfw, t) => sfw.RootFolderPatch = t);
         }
 
         public CommandBase DeleteFilterCommand {

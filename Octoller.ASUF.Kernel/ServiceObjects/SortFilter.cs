@@ -21,13 +21,13 @@ namespace Octoller.ASUF.Kernel.ServiceObjects {
             get; set;
         }
 
-        public ReasonCreatingFolder ReasonCreating {
-            get; set;
-        } = ReasonCreatingFolder.OverflowAmount;
-
         public string RootFolderPatch {
             get; set;
         }
+
+        public ReasonCreatingFolder ReasonCreating {
+            get; set;
+        } = ReasonCreatingFolder.OverflowAmount;
 
         public int Limit {
             get; set;

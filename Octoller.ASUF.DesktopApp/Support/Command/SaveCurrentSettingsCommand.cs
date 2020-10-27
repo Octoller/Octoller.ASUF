@@ -59,6 +59,7 @@ namespace Octoller.ASUF.DesktopApp.Support.Command {
                     }
 
                     watcher.UnSubscrible();
+                    builder.SaveSettings(tempContainer);
                     watcher.ApplySettings(tempContainer);
                     watcher.Subscrible();
 
