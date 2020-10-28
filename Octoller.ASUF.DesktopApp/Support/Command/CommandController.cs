@@ -14,6 +14,7 @@
  */
 
 using Octoller.ASUF.Kernel.Processor;
+using Octoller.ASUF.Kernel.ServiceObjects;
 
 namespace Octoller.ASUF.DesktopApp.Support.Command {
     public class CommandController {
@@ -49,17 +50,17 @@ namespace Octoller.ASUF.DesktopApp.Support.Command {
 
         public CommandBase WatchedFolderSelectCommand {
             get => watchedFolderSelectCommand ??=
-                new PathFolderSelectCommand<SettingsContainerWrap>((scw, t) => scw.WatchedFolder = t);
+                new PathFolderSelectCommand<SettingsContainer>((scw, t) => scw.WatchedFolder = t);
         }
 
         public CommandBase FolderNotFilterSelectCommand {
             get => folderNotFilterSelectCommand ??=
-                new PathFolderSelectCommand<SettingsContainerWrap>((scw, t) => scw.FolderNotFilter = t);
+                new PathFolderSelectCommand<SettingsContainer>((scw, t) => scw.FolderNotFilter = t);
         }
 
         public CommandBase FilterRootFolderSelectCommand {
             get => filterRootFolderSelectCommand ??=
-                new PathFolderSelectCommand<SortFilterWrap>((sfw, t) => sfw.RootFolderPatch = t);
+                new PathFolderSelectCommand<SortFilter>((sfw, t) => sfw.RootFolderPatch = t);
         }
 
         public CommandBase DeleteFilterCommand {

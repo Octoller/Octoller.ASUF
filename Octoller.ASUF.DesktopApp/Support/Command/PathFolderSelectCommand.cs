@@ -13,8 +13,8 @@
  * ************************************************************************************************************************** 
  */
 
+using Octoller.ASUF.Kernel.ServiceObjects;
 using System;
-using System.Diagnostics;
 
 namespace Octoller.ASUF.DesktopApp.Support.Command {
     public class PathFolderSelectCommand<T> : CommandBase {
@@ -27,7 +27,7 @@ namespace Octoller.ASUF.DesktopApp.Support.Command {
 
         public override bool CanExecute(object parameter) {
 
-            if (parameter is SortFilterWrap) {
+            if (parameter is SortFilter) {
                 return true;
             }
             return true;

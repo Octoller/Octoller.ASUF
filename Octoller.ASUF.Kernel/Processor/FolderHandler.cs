@@ -27,7 +27,7 @@ namespace Octoller.ASUF.Kernel.Processor {
             CreateDirectoryIfNotFound(settings.WatchedFolder);
             CreateDirectoryIfNotFound(settings.FolderNotFilter);
 
-            foreach (var f in settings.Filter) {
+            foreach (var f in settings.Filters) {
                 CreateDirectoryIfNotFound(f.RootFolderPatch);
             }
         }

@@ -16,6 +16,7 @@
 using Octoller.ASUF.DesktopApp.Support;
 using Octoller.ASUF.DesktopApp.Support.Command;
 using Octoller.ASUF.Kernel.Processor;
+using Octoller.ASUF.Kernel.ServiceObjects;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
@@ -26,13 +27,13 @@ namespace Octoller.ASUF.DesktopApp.View {
         private SettingsBuilder settingsBuilder;
         private Watcher watcher;
 
-        private SettingsContainerWrap containerWrap;
+        private SettingsContainer settingsContainer;
         private CommandController commandController;
 
-        public SettingsContainerWrap ContainerWrap {
-            get => containerWrap;
+        public SettingsContainer SettingsContainer {
+            get => settingsContainer;
             set {
-                containerWrap = value;
+                settingsContainer = value;
                 OnPropertyChanged();
             }
         }
@@ -45,8 +46,7 @@ namespace Octoller.ASUF.DesktopApp.View {
         public ASUFApplicationViewModel() {
 
             settingsBuilder = new SettingsBuilder();
-            var tempSettings = settingsBuilder.GetSettings();
-            containerWrap = new SettingsContainerWrap(tempSettings);
+            SettingsContainer = settingsBuilder.GetSettings();
             watcher = new Watcher();
         }
 

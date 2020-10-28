@@ -13,20 +13,49 @@
  * ************************************************************************************************************************** 
  */
 
+using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
+
 namespace Octoller.ASUF.Kernel.ServiceObjects {
 
-    public sealed class SettingsContainer {
+    public sealed class SettingsContainer : INotifyPropertyChanged {
+
+        private string watchedFolder;
+        private string folderNotFilter;
+        private SortFilter selectedFilter;
+
+        public ObservableCollection<SortFilter> Filters {
+            get; set;
+        } = new ObservableCollection<SortFilter>();
+
+        public SortFilter SelectedFilter {
+            get => selectedFilter;
+            set {
+                selectedFilter = value;
+                OnPropertyChanged();
+            }
+        }
 
         public string WatchedFolder {
-            get; set;
+            get => watchedFolder;
+            set {
+                watchedFolder = value;
+                OnPropertyChanged();
+            }
         }
 
         public string FolderNotFilter {
-            get; set;
+            get => folderNotFilter;
+            set {
+                folderNotFilter = value;
+                OnPropertyChanged();
+            }
         }
 
-        public SortFilter[] Filter {
-            get; set;
+        public event PropertyChangedEventHandler PropertyChanged;
+        private void OnPropertyChanged([CallerMemberName] string prop = "") {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(prop));
         }
     }
 }

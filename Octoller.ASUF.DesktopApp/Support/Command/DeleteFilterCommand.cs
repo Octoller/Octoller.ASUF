@@ -13,15 +13,17 @@
  * ************************************************************************************************************************** 
  */
 
+using Octoller.ASUF.Kernel.ServiceObjects;
+
 namespace Octoller.ASUF.DesktopApp.Support.Command {
 
     public class DeleteFilterCommand : CommandBase {
 
         public override bool CanExecute(object parameter) {
 
-            if (parameter is SettingsContainerWrap container) {
+            if (parameter is SettingsContainer container) {
 
-                if (container.SelectedFilter != null) {
+                if (container != null) {
 
                     return true;
                 }
@@ -31,7 +33,7 @@ namespace Octoller.ASUF.DesktopApp.Support.Command {
 
         public override void Execute(object parameter) {
 
-            if (parameter is SettingsContainerWrap container) {
+            if (parameter is SettingsContainer container) {
 
                 container.Filters.Remove(container.SelectedFilter);
             }

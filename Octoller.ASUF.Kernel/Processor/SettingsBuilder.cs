@@ -15,6 +15,7 @@
 
 using Octoller.ASUF.Kernel.Extension;
 using Octoller.ASUF.Kernel.ServiceObjects;
+using System;
 using System.IO;
 
 namespace Octoller.ASUF.Kernel.Processor {
@@ -77,7 +78,7 @@ namespace Octoller.ASUF.Kernel.Processor {
             string sorted = FolderHandler.
                 CreateDirectoryIfNotFound(Path.Combine(root, sortedRootFolder));
 
-            settings.Filter = new[] {
+            var arrayFilters = new[] {
                 new SortFilter() {
                     Extension = new[] { jpg, jpeg, bmp, png },
                     RootFolderPatch = FolderHandler
@@ -102,6 +103,8 @@ namespace Octoller.ASUF.Kernel.Processor {
                     Limit = DEFAULT_LIMIT
                  }
             };
+
+            Array.ForEach(arrayFilters, f => settings.Filters.Add(f));
 
             settings.WatchedFolder = temp;
             settings.FolderNotFilter = FolderHandler

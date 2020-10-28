@@ -20,7 +20,6 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System;
-using System.Diagnostics;
 
 namespace Octoller.ASUF.Kernel.Processor {
 
@@ -73,7 +72,7 @@ namespace Octoller.ASUF.Kernel.Processor {
                 throw new ArgumentException("Unable to apply empty settings object.", nameof(settings));
             }
 
-            foreach (var f in settings.Filter) {
+            foreach (var f in settings.Filters) {
                 string lastFolder =
                     FolderHandler.GetLastFolder(f.RootFolderPatch);
 
@@ -87,7 +86,7 @@ namespace Octoller.ASUF.Kernel.Processor {
             watchedFolder = settings.WatchedFolder;
             systemWatcher.Path = watchedFolder;
 
-            folderNotFilter = new TempNotFoundFilter() {
+            folderNotFilter = new EmptyTempFilter() {
                 LastFolderPatch = settings.FolderNotFilter
             };
         }

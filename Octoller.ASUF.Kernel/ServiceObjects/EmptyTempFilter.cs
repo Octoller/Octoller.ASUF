@@ -14,7 +14,7 @@
  */
 namespace Octoller.ASUF.Kernel.ServiceObjects {
 
-    public sealed class TempNotFoundFilter : ITempFilter {
+    public sealed class EmptyTempFilter : ITempFilter {
 
 
         string ITempFilter.RootFolderPatch {

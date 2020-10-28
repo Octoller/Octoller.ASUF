@@ -13,26 +13,57 @@
  * ************************************************************************************************************************** 
  */
 
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
+
 namespace Octoller.ASUF.Kernel.ServiceObjects {
 
-    public sealed class SortFilter {
+    public sealed class SortFilter : INotifyPropertyChanged {
+
+        private string[] extension;
+        private string rootFolderPatch;
+        private int limit;
+        private ReasonCreatingFolder reasonCreating
+            = ReasonCreatingFolder.None;
+
 
         public string[] Extension {
-            get; set;
+            get => extension;
+            set {
+                extension = value;
+                OnPropertyChanged();
+            }
         }
 
         public string RootFolderPatch {
-            get; set;
+            get => rootFolderPatch;
+            set {
+                rootFolderPatch = value;
+                OnPropertyChanged();
+            }
         }
 
         public ReasonCreatingFolder ReasonCreating {
-            get; set;
-        } = ReasonCreatingFolder.OverflowAmount;
+            get => reasonCreating;
+            set {
+                reasonCreating = value;
+                OnPropertyChanged();
+            }
+        }
 
         public int Limit {
-            get; set;
+            get => limit;
+            set {
+                limit = value;
+                OnPropertyChanged();
+            }
         }
 
         public SortFilter() { }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        private void OnPropertyChanged([CallerMemberName] string prop = "") =>
+             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(prop));
     }
 }

@@ -13,6 +13,7 @@
  * ************************************************************************************************************************** 
  */
 
+using Octoller.ASUF.Kernel.Extension;
 using Octoller.ASUF.Kernel.Processor;
 using Octoller.ASUF.Kernel.ServiceObjects;
 using System;
@@ -36,8 +37,8 @@ namespace Octoller.ASUF.DesktopApp.Support.Command {
         public override bool CanExecute(object parameter) {
 
 
-            if (parameter is SettingsContainerWrap container) {
-                return container.Empty() ? false : !container.Filters.Any(f => f.IsEmpty);
+            if (parameter is SettingsContainer container) {
+                return container.Empty() ? false : !container.Filters.Any(f => f.Empty());
             } 
 
             return false;
@@ -45,9 +46,7 @@ namespace Octoller.ASUF.DesktopApp.Support.Command {
 
         public override void Execute(object parameter) {
             
-            if (parameter is SettingsContainerWrap container) {
-
-                var tempContainer = CreateContainer(container);
+            if (parameter is SettingsContainer container) {
 
                 try {
 
@@ -59,8 +58,8 @@ namespace Octoller.ASUF.DesktopApp.Support.Command {
                     }
 
                     watcher.UnSubscrible();
-                    builder.SaveSettings(tempContainer);
-                    watcher.ApplySettings(tempContainer);
+                    builder.SaveSettings(container);
+                    watcher.ApplySettings(container);
                     watcher.Subscrible();
 
                     if (restart) {
@@ -73,25 +72,6 @@ namespace Octoller.ASUF.DesktopApp.Support.Command {
                     return;
                 }
             }
-        }
-
-        private SettingsContainer CreateContainer(SettingsContainerWrap container) {
-
-            var tempList = new List<SortFilter>();
-
-            Array.ForEach(container.Filters.ToArray(),
-                f => tempList.Add(new SortFilter() {
-                    Extension = f.Extension,
-                    RootFolderPatch = f.RootFolderPatch,
-                    ReasonCreating = f.ReasonCreating,
-                    Limit = f.Limit
-                }));
-
-            return new SettingsContainer() {
-                Filter = tempList.ToArray(),
-                FolderNotFilter = container.FolderNotFilter,
-                WatchedFolder = container.WatchedFolder
-            };
         }
     }
 }

@@ -30,35 +30,36 @@ namespace Octoller.ASUF.DesktopApp.Support.Command {
         }
 
         public override bool CanExecute(object parameter) =>
-            parameter != null && parameter is SettingsContainerWrap;
+            parameter != null && parameter is SettingsContainer;
 
         public override void Execute(object parameter) {
 
-            if (parameter is SettingsContainerWrap container) {
+            if (parameter is SettingsContainer container) {
 
                 var tempContainer = builder.CreateDefaultSettings();
                 WriteInContainerWrap(container, tempContainer);
             }
         }
 
-        private void WriteInContainerWrap(SettingsContainerWrap settingsWrap, SettingsContainer settings) {
-            
-            settingsWrap.Filters.Clear();
-            settingsWrap.FolderNotFilter = string.Empty;
-            settingsWrap.WatchedFolder = string.Empty;
+        private void WriteInContainerWrap(SettingsContainer settingsOld, SettingsContainer settingsNew) {
 
-            if (!settings.Empty()) {
+            settingsOld.Filters.Clear();
+            settingsOld.FolderNotFilter = string.Empty;
+            settingsOld.WatchedFolder = string.Empty;
 
-                Array.ForEach(settings.Filter, 
-                    f => settingsWrap.Filters.Add(new SortFilterWrap() {
-                        Extension = f.Extension,
-                        RootFolderPatch = f.RootFolderPatch,
-                        ReasonCreating = f.ReasonCreating,
-                        Limit = f.Limit
-                    }));
+            if (!settingsNew.Empty()) {
 
-                settingsWrap.FolderNotFilter = settings.FolderNotFilter;
-                settingsWrap.WatchedFolder = settings.WatchedFolder;
+                for (int i = 0; i < settingsNew.Filters.Count; i++) {
+                    settingsOld.Filters.Add(new SortFilter() {
+                        Extension = settingsNew.Filters[i].Extension,
+                        RootFolderPatch = settingsNew.Filters[i].RootFolderPatch,
+                        ReasonCreating = settingsNew.Filters[i].ReasonCreating,
+                        Limit = settingsNew.Filters[i].Limit
+                    });
+                }
+
+                settingsOld.FolderNotFilter = settingsNew.FolderNotFilter;
+                settingsOld.WatchedFolder = settingsNew.WatchedFolder;
             }
         }
     }

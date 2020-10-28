@@ -13,18 +13,20 @@
  * ************************************************************************************************************************** 
  */
 
+using Octoller.ASUF.Kernel.ServiceObjects;
+
 namespace Octoller.ASUF.DesktopApp.Support.Command {
 
     public class AddFilterInListCommand : CommandBase {
         
         public override bool CanExecute(object parameter) =>
-            parameter != null && parameter is SettingsContainerWrap;
+            parameter != null && parameter is SettingsContainer;
 
         public override void Execute(object parameter) {
 
-            if (parameter is SettingsContainerWrap settingsContainer) {
+            if (parameter is SettingsContainer settingsContainer) {
 
-                settingsContainer.Filters.Add(new SortFilterWrap());
+                settingsContainer.Filters.Add(new SortFilter());
             }
         }
     }

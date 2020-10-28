@@ -42,9 +42,13 @@ namespace Octoller.ASUF.Kernel.Extension {
             };
 
         public static bool Empty(this SettingsContainer unit) =>
-            ((unit.Filter == null || unit.Filter.Length == 0)
+            ((unit.Filters == null || !unit.Filters.Any())
             || string.IsNullOrEmpty(unit.WatchedFolder)
             || string.IsNullOrEmpty(unit.FolderNotFilter));
+
+        public static bool Empty(this SortFilter unit) =>
+            unit.Extension == null || !unit.Extension.Any()
+            || string.IsNullOrEmpty(unit.RootFolderPatch);
 
         public static void SplitStringExtension(this SortFilter filter, string input) =>
             filter.Extension = input.Replace(" ", "")
