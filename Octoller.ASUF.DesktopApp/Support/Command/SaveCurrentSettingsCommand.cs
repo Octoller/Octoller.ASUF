@@ -17,7 +17,6 @@ using Octoller.ASUF.Kernel.Extension;
 using Octoller.ASUF.Kernel.Processor;
 using Octoller.ASUF.Kernel.ServiceObjects;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 
@@ -28,7 +27,11 @@ namespace Octoller.ASUF.DesktopApp.Support.Command {
         private SettingsBuilder builder;
         private Watcher watcher;
 
-        public SaveCurrentSettingsCommand(SettingsBuilder builder, Watcher watcher) {
+        public SaveCurrentSettingsCommand(SettingsBuilder builder, Watcher watcher) 
+            : this(builder, watcher, "Save and Aplay settings") { }
+
+        public SaveCurrentSettingsCommand(SettingsBuilder builder, Watcher watcher, string text)
+            : base(text) {
 
             this.watcher = watcher;
             this.builder = builder;
@@ -36,11 +39,9 @@ namespace Octoller.ASUF.DesktopApp.Support.Command {
 
         public override bool CanExecute(object parameter) {
 
-
             if (parameter is SettingsContainer container) {
                 return container.Empty() ? false : !container.Filters.Any(f => f.Empty());
             } 
-
             return false;
         }
 

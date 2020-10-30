@@ -21,7 +21,11 @@ namespace Octoller.ASUF.DesktopApp.Support.Command {
 
         private Action<T, string> write;
 
-        public PathFolderSelectCommand(Action<T, string> write) {
+        public PathFolderSelectCommand(Action<T, string> write) 
+            : this (write, "Folder Select") { }
+
+        public PathFolderSelectCommand(Action<T, string> write, string text)
+            : base(text) {
             this.write = write;
         }
 

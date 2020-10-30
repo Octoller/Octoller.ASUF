@@ -14,11 +14,16 @@
     </Window.Resources>
     <Grid>
         <TabControl SelectedIndex="1">
+
             <TabItem Header="Main">
                 <Grid Background="#FFE5E5E5">
                     <Grid Margin="0,0,441,0">
-                        <Button Name="_btStart" Content="Start" HorizontalAlignment="Center" Margin="0,24,0,0" VerticalAlignment="Top" Width="116" Height="29"/>
-                        <Button Name="_btStop" Content="Stop" HorizontalAlignment="Center" Margin="0,58,0,0" VerticalAlignment="Top" Width="116" Height="29"/>
+                        <Button Name="_btStart" Content="Start" HorizontalAlignment="Center" 
+                                Margin="0,24,0,0" VerticalAlignment="Top" Width="116" Height="29"/>
+                        
+                        <Button Name="_btStop" Content="Stop" HorizontalAlignment="Center" 
+                                Margin="0,58,0,0" VerticalAlignment="Top" Width="116" Height="29"/>
+                        
                     </Grid>
                     <Grid Margin="180,0,0,0">
                         <ListView>
@@ -58,9 +63,17 @@
 
                                     <TextBox x:Name="_tbRoot" HorizontalAlignment="Left" Margin="83,10,0,0" TextWrapping="NoWrap" VerticalAlignment="Top" Width="236" Height="16"
                                             Text="{Binding Path=RootFolderPatch}" HorizontalContentAlignment="Left" VerticalContentAlignment="Center" MaxLines="1" Padding="0,-2,0,0"/>
-
+                                    
                                     <TextBox x:Name="_tbLimit" HorizontalAlignment="Left" Margin="83,52,0,0" TextWrapping="NoWrap" VerticalAlignment="Top" Width="77" Height="16"
-                                            Text="{Binding Path=Limit}" HorizontalContentAlignment="Left" VerticalContentAlignment="Center" MaxLines="1" Padding="0,-2,0,0"/>
+                                             HorizontalContentAlignment="Left" VerticalContentAlignment="Center" MaxLines="1" Padding="0,-2,0,0">
+                                        <TextBox.Text>
+                                            <Binding Path="Limit" UpdateSourceTrigger="PropertyChanged">
+                                                <Binding.ValidationRules>
+                                                    <ExceptionValidationRule/>
+                                                </Binding.ValidationRules>
+                                            </Binding>
+                                        </TextBox.Text>
+                                    </TextBox>
 
                                     <ComboBox x:Name="_cbReason" HorizontalAlignment="Left" Margin="165,52,0,0" VerticalAlignment="Top" Width="154" Height="16"
                                             ItemsSource="{Binding Source={x:Type kernel:ReasonCreatingFolder}, Converter={StaticResource enumToArrayConvert}}" 
@@ -84,7 +97,7 @@
                              DataContext="{Binding Path=SettingsContainer}" Text="{Binding Path=WatchedFolder}"/>
 
                     <TextBox x:Name="_folderNotFilter" Margin="0,313,47,0" TextWrapping="NoWrap" Height="18" HorizontalAlignment="Right" VerticalAlignment="Top" Width="256"
-                             DataContext="{Binding Path=SettingsContainer}">
+                             DataContext="{Binding Path=SettingsContainer, UpdateSourceTrigger=PropertyChanged}">
                         <TextBox.Text>
                             <Binding Path="FolderNotFilter">
                                 <Binding.ValidationRules>

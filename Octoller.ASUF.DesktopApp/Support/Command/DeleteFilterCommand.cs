@@ -19,6 +19,10 @@ namespace Octoller.ASUF.DesktopApp.Support.Command {
 
     public class DeleteFilterCommand : CommandBase {
 
+        public DeleteFilterCommand() : this ("Delete") { }
+
+        public DeleteFilterCommand(string text) : base (text) { }
+
         public override bool CanExecute(object parameter) {
 
             if (parameter is SettingsContainer container) {

@@ -20,6 +20,14 @@ namespace Octoller.ASUF.DesktopApp.Support.Command {
 
     public abstract class CommandBase : ICommand {
 
+        public string Text {
+            get;
+        }
+
+        protected CommandBase(string text) {
+            Text = text;
+        }
+
         public abstract bool CanExecute(object parameter);
         public abstract void Execute(object parameter);
 

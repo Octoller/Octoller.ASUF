@@ -25,7 +25,12 @@ namespace Octoller.ASUF.DesktopApp.Support.Command {
 
         private SettingsBuilder builder;
 
-        public SetDefaultSettingsCommand(SettingsBuilder builder) {
+        public SetDefaultSettingsCommand(SettingsBuilder builder) 
+            : this (builder, "Set Default Settings") { }
+
+        public SetDefaultSettingsCommand(SettingsBuilder builder, string text) 
+            : base(text) {
+
             this.builder = builder;
         }
 
