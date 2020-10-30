@@ -13,8 +13,11 @@
  * ************************************************************************************************************************** 
  */
 
+using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
+using System.IO;
 using System.Runtime.CompilerServices;
 
 namespace Octoller.ASUF.Kernel.ServiceObjects {
@@ -40,16 +43,24 @@ namespace Octoller.ASUF.Kernel.ServiceObjects {
         public string WatchedFolder {
             get => watchedFolder;
             set {
-                watchedFolder = value;
-                OnPropertyChanged();
+                if (!Directory.Exists(value)) {
+                    throw new ArgumentException("Invalid directory path specified");
+                } else {
+                    watchedFolder = value;
+                    OnPropertyChanged();
+                }
             }
         }
 
         public string FolderNotFilter {
             get => folderNotFilter;
             set {
-                folderNotFilter = value;
-                OnPropertyChanged();
+                if (!Directory.Exists(value)) {
+                    throw new ArgumentException("Invalid directory path specified");
+                } else {
+                    folderNotFilter = value;
+                    OnPropertyChanged();
+                }
             }
         }
 

@@ -13,7 +13,9 @@
  * ************************************************************************************************************************** 
  */
 
+using System;
 using System.ComponentModel;
+using System.IO;
 using System.Runtime.CompilerServices;
 
 namespace Octoller.ASUF.Kernel.ServiceObjects {
@@ -38,8 +40,13 @@ namespace Octoller.ASUF.Kernel.ServiceObjects {
         public string RootFolderPatch {
             get => rootFolderPatch;
             set {
-                rootFolderPatch = value;
-                OnPropertyChanged();
+                if (!Directory.Exists(value)) {
+                    throw new ArgumentException("Invalid directory path specified");
+                } else {
+                    rootFolderPatch = value;
+                    OnPropertyChanged();
+                }
+                
             }
         }
 
@@ -54,8 +61,13 @@ namespace Octoller.ASUF.Kernel.ServiceObjects {
         public int Limit {
             get => limit;
             set {
-                limit = value;
-                OnPropertyChanged();
+                if (value <= 0) {
+                    throw new ArgumentException("Invalid limit specified");
+                } else {
+                    limit = value;
+                    OnPropertyChanged();
+                }
+                    
             }
         }
 

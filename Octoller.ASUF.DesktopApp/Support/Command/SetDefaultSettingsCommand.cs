@@ -44,8 +44,6 @@ namespace Octoller.ASUF.DesktopApp.Support.Command {
         private void WriteInContainerWrap(SettingsContainer settingsOld, SettingsContainer settingsNew) {
 
             settingsOld.Filters.Clear();
-            settingsOld.FolderNotFilter = string.Empty;
-            settingsOld.WatchedFolder = string.Empty;
 
             if (!settingsNew.Empty()) {
 

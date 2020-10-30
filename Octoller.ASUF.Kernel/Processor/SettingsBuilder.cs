@@ -16,6 +16,7 @@
 using Octoller.ASUF.Kernel.Extension;
 using Octoller.ASUF.Kernel.ServiceObjects;
 using System;
+using System.Diagnostics;
 using System.IO;
 
 namespace Octoller.ASUF.Kernel.Processor {
@@ -107,8 +108,11 @@ namespace Octoller.ASUF.Kernel.Processor {
             Array.ForEach(arrayFilters, f => settings.Filters.Add(f));
 
             settings.WatchedFolder = temp;
-            settings.FolderNotFilter = FolderHandler
+            string tempPath = FolderHandler
                 .CreateDirectoryIfNotFound(Path.Combine(sorted, otherFolder));
+            Debug.Print("Default: " + tempPath);
+            settings.FolderNotFilter = tempPath;
+
 
             return settings;
         }

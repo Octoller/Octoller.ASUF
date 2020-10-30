@@ -25,6 +25,7 @@
                             <ListView.View>
                                 <GridView>
                                     <GridViewColumn/>
+                                    <GridViewColumn/>
                                 </GridView>
                             </ListView.View>
                         </ListView>
@@ -43,34 +44,34 @@
                                 </Style.Triggers>
                             </Style>
                         </ListBox.ItemContainerStyle>
-                            <ListBox.ItemTemplate>
-                                <DataTemplate>
-                                    <Grid Background="Gray"  UseLayoutRounding="False" Width="390" Height="74" MaxWidth="390" MinWidth="390" Cursor="Hand">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <Grid Background="Gray"  UseLayoutRounding="False" Width="390" Height="74" MaxWidth="390" MinWidth="390" Cursor="Hand">
 
-                                        <Label Content="Extension" Margin="0,31,287,27" Height="16" FontSize="11" Padding="5,0,5,0" HorizontalContentAlignment="Left"/>
-                                        <Label Content="Root Folder" Margin="0,10,282,48" Height="16" Padding="5,0,5,0" HorizontalContentAlignment="Left"/>
-                                        <Label Content="limit" Margin="0,52,287,6" Height="16" Padding="5,0,5,0" HorizontalContentAlignment="Left"/>
+                                    <Label Content="Extension" Margin="0,31,287,27" Height="16" FontSize="11" Padding="5,0,5,0" HorizontalContentAlignment="Left"/>
+                                    <Label Content="Root Folder" Margin="0,10,282,48" Height="16" Padding="5,0,5,0" HorizontalContentAlignment="Left"/>
+                                    <Label Content="limit" Margin="0,52,287,6" Height="16" Padding="5,0,5,0" HorizontalContentAlignment="Left"/>
 
-                                        <TextBox x:Name="_tbExtension" HorizontalAlignment="Left" Margin="83,31,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="275" Height="16"
-                                                    Text="{Binding Path=Extension, Converter={StaticResource arrayToStringConvert}}" HorizontalContentAlignment="Left" 
-                                                    VerticalContentAlignment="Center" MaxLines="1" Padding="0,-2,0,0"/>
+                                    <TextBox x:Name="_tbExtension" HorizontalAlignment="Left" Margin="83,31,0,0" TextWrapping="NoWrap" VerticalAlignment="Top" Width="275" Height="16"
+                                            Text="{Binding Path=Extension, Converter={StaticResource arrayToStringConvert}}" HorizontalContentAlignment="Left" 
+                                            VerticalContentAlignment="Center" MaxLines="1" Padding="0,-2,0,0"/>
 
-                                        <TextBox x:Name="_tbRoot" HorizontalAlignment="Left" Margin="83,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="236" Height="16"
-                                                    Text="{Binding Path=RootFolderPatch}" HorizontalContentAlignment="Left" VerticalContentAlignment="Center" MaxLines="1" Padding="0,-2,0,0"/>
+                                    <TextBox x:Name="_tbRoot" HorizontalAlignment="Left" Margin="83,10,0,0" TextWrapping="NoWrap" VerticalAlignment="Top" Width="236" Height="16"
+                                            Text="{Binding Path=RootFolderPatch}" HorizontalContentAlignment="Left" VerticalContentAlignment="Center" MaxLines="1" Padding="0,-2,0,0"/>
 
-                                        <TextBox x:Name="_tbLimit" HorizontalAlignment="Left" Margin="83,52,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="77" Height="16"
-                                                Text="{Binding Path=Limit}" HorizontalContentAlignment="Left" VerticalContentAlignment="Center" MaxLines="1" Padding="0,-2,0,0"/>
+                                    <TextBox x:Name="_tbLimit" HorizontalAlignment="Left" Margin="83,52,0,0" TextWrapping="NoWrap" VerticalAlignment="Top" Width="77" Height="16"
+                                            Text="{Binding Path=Limit}" HorizontalContentAlignment="Left" VerticalContentAlignment="Center" MaxLines="1" Padding="0,-2,0,0"/>
 
-                                        <ComboBox x:Name="_cbReason" HorizontalAlignment="Left" Margin="165,52,0,0" VerticalAlignment="Top" Width="154" Height="16"
-                                                ItemsSource="{Binding Source={x:Type kernel:ReasonCreatingFolder}, Converter={StaticResource enumToArrayConvert}}" 
-                                                SelectedIndex="{Binding Path=ReasonCreating, Converter={StaticResource enumItemConvert}}" HorizontalContentAlignment="Left" Padding="5,-3,5,0" 
-                                                VerticalContentAlignment="Center"/>
-                                        <Button x:Name="_selectRootFolderFilter" Content="..." HorizontalAlignment="Left" Margin="324,10,0,0" VerticalAlignment="Top" Height="16" Width="34" BorderThickness="1,0,0,0" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"
-                                                Command="{Binding Path=DataContext.CommandController.FilterRootFolderSelectCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}" 
-                                                CommandParameter="{Binding Path=DataContext.SelectedFilter, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ListBox}}}"/>
+                                    <ComboBox x:Name="_cbReason" HorizontalAlignment="Left" Margin="165,52,0,0" VerticalAlignment="Top" Width="154" Height="16"
+                                            ItemsSource="{Binding Source={x:Type kernel:ReasonCreatingFolder}, Converter={StaticResource enumToArrayConvert}}" 
+                                            SelectedIndex="{Binding Path=ReasonCreating, Converter={StaticResource enumItemConvert}}" HorizontalContentAlignment="Left" Padding="5,-3,5,0" 
+                                            VerticalContentAlignment="Center"/>
+                                    <Button x:Name="_selectRootFolderFilter" Content="..." HorizontalAlignment="Left" Margin="324,10,0,0" VerticalAlignment="Top" Height="16" Width="34" BorderThickness="1,0,0,0" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"
+                                            Command="{Binding Path=DataContext.CommandController.FilterRootFolderSelectCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}" 
+                                            CommandParameter="{Binding Path=DataContext.SelectedFilter, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ListBox}}}"/>
                                     <Button x:Name="_btDeleteFilter" Content="X" HorizontalAlignment="Left" Margin="363,10,0,0" VerticalAlignment="Top" Width="25" Height="58"
-                                                Command="{Binding Path=DataContext.CommandController.DeleteFilterCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}" 
-                                                CommandParameter="{Binding Path=DataContext, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ListBox}}}"/>
+                                            Command="{Binding Path=DataContext.CommandController.DeleteFilterCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}" 
+                                            CommandParameter="{Binding Path=DataContext, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ListBox}}}"/>
                                 </Grid>
                             </DataTemplate>
                         </ListBox.ItemTemplate>
@@ -79,11 +80,19 @@
                     <Label Content="Watched Folder:" Margin="0,290,308,0" HorizontalAlignment="Right" VerticalAlignment="Top" Height="18" VerticalContentAlignment="Center" Padding="0,0,0,0"/>
                     <Label Content="Folder Not Filter:" Margin="0,313,308,0" HorizontalAlignment="Right" VerticalAlignment="Top" Height="18" VerticalContentAlignment="Center" Padding="0,0,0,0"/>
 
-                    <TextBox x:Name="_tbWatchedFolder" Margin="0,290,47,0" TextWrapping="Wrap" Height="18" HorizontalAlignment="Right" VerticalAlignment="Top" Width="256"
-                             DataContext="{Binding Path=SettingsContainer}" Text="{Binding Path=WatchedFolder}" IsEnabled="False"/>
+                    <TextBox x:Name="_tbWatchedFolder" Margin="0,290,47,0" TextWrapping="NoWrap" Height="18" HorizontalAlignment="Right" VerticalAlignment="Top" Width="256"
+                             DataContext="{Binding Path=SettingsContainer}" Text="{Binding Path=WatchedFolder}"/>
 
-                    <TextBox x:Name="_folderNotFilter" Margin="0,313,47,0" TextWrapping="Wrap" Height="18" HorizontalAlignment="Right" VerticalAlignment="Top" Width="256"
-                             DataContext="{Binding Path=SettingsContainer}" Text="{Binding Path=FolderNotFilter}" IsEnabled="False"/>
+                    <TextBox x:Name="_folderNotFilter" Margin="0,313,47,0" TextWrapping="NoWrap" Height="18" HorizontalAlignment="Right" VerticalAlignment="Top" Width="256"
+                             DataContext="{Binding Path=SettingsContainer}">
+                        <TextBox.Text>
+                            <Binding Path="FolderNotFilter">
+                                <Binding.ValidationRules>
+                                    <ExceptionValidationRule/>
+                                </Binding.ValidationRules>
+                            </Binding>
+                        </TextBox.Text>
+                    </TextBox>
 
                     <Button x:Name="_btSave" Content="Aplay and save settings" HorizontalAlignment="Left" Margin="31,47,0,0" VerticalAlignment="Top" Width="154" Height="34"
                             Command="{Binding Path=CommandController.SaveSettingsCommand}" CommandParameter="{Binding Path=SettingsContainer}"/>
