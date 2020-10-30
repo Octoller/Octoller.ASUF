@@ -30,8 +30,9 @@ namespace Octoller.ASUF.DesktopApp.Support.Command {
         private CommandBase folderNotFilterSelectCommand;
         private CommandBase filterRootFolderSelectCommand;
 
-
         private CommandBase deleteFilterCommand;
+
+        public CommandController() { }
 
         public CommandBase AddFilterCommand {
             get => addFilterCommand ??=
