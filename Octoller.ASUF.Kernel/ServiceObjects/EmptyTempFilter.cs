@@ -12,31 +12,17 @@
  * 
  * ************************************************************************************************************************** 
  */
+
 namespace Octoller.ASUF.Kernel.ServiceObjects {
 
-    public sealed class EmptyTempFilter : ITempFilter {
+    public class EmptyTempFilter : TempFilter {
 
-
-        string ITempFilter.RootFolderPatch {
+        public override string LastFolderPatch {
             get; set;
         }
 
-        public string LastFolderPatch {
-            get; set;
-        }
+        public override bool IsExcess() => false;
 
-        double ITempFilter.Limit {
-            get; set;
-        }
-
-        double ITempFilter.Counter {
-            get; set;
-        }
-
-        public bool isExcess => false;
-
-        public ReasonCreatingFolder ReasonCreating {
-            get; set;
-        } = ReasonCreatingFolder.None;
+        public EmptyTempFilter() : base(string.Empty, 0) { }
     }
 }

@@ -15,32 +15,62 @@
 
 namespace Octoller.ASUF.Kernel.ServiceObjects {
 
-    public sealed class TempFilter : ITempFilter {
+    /// <summary>
+    /// Filter class used in the process of processing file download notifications
+    /// </summary>
+    public class TempFilter {
 
-        public string RootFolderPatch {
+        /// <summary>
+        /// Root folder for sorting files of the selected type.
+        /// </summary>
+        public virtual string RootFolderPatch {
             get; set;
         }
 
-        public string LastFolderPatch {
+        /// <summary>
+        /// Path of the last subfolder.
+        /// </summary>
+        public virtual string LastFolderPatch {
             get; set;
         }
 
-        public double Limit {
+
+        /// <summary>
+        /// The size above which the new subfolder will be created.
+        /// </summary>
+        public virtual double Limit {
             get; set;
         }
 
-        public double Counter {
+
+        /// <summary>
+        /// Current limit counter.
+        /// </summary>
+        public virtual double Counter {
             get; set;
         }
 
-        public bool isExcess {
-            get => Counter > Limit;
-        }
 
-        public ReasonCreatingFolder ReasonCreating {
+        /// <summary>
+        /// Сhecks if the size is exceeded.
+        /// </summary>
+        /// <returns>Returns true if the size is exceeded.</returns>
+        public virtual bool IsExcess() =>
+            Counter > Limit;
+
+
+        /// <summary>
+        /// Reason for creating a new subfolder.
+        /// </summary>
+        public virtual ReasonCreatingFolder ReasonCreating {
             get; set;
         }
 
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="root">Root folder for sorting files of the selected type.</param>
+        /// <param name="limit">The size above which the new subfolder will be created.</param>
         public TempFilter(string root, double limit) {
 
             if (limit <= 0) {

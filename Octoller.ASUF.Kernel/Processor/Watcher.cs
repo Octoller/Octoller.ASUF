@@ -28,10 +28,10 @@ namespace Octoller.ASUF.Kernel.Processor {
         private const int OPERATION_INTERVAL = 200;
 
         private string watchedFolder = string.Empty;
-        private Dictionary<string[], ITempFilter> filtersLibrary;
+        private Dictionary<string[], TempFilter> filtersLibrary;
         private FileSystemWatcher systemWatcher;
 
-        private ITempFilter folderNotFilter;
+        private TempFilter folderNotFilter;
 
         public bool IsWatcing {
             get => systemWatcher.EnableRaisingEvents;
@@ -66,7 +66,7 @@ namespace Octoller.ASUF.Kernel.Processor {
 
         public void ApplySettings(SettingsContainer settings) {
 
-            filtersLibrary = new Dictionary<string[], ITempFilter>();
+            filtersLibrary = new Dictionary<string[], TempFilter>();
 
             if (settings.Empty()) {
                 throw new ArgumentException("Unable to apply empty settings object.", nameof(settings));
@@ -96,8 +96,8 @@ namespace Octoller.ASUF.Kernel.Processor {
             Thread.Sleep(OPERATION_INTERVAL);
             FileInfo file = new FileInfo(e.FullPath);
 
-            ITempFilter destination = GetRequestPatch(file.Extension);
-            if (destination.isExcess) {
+            TempFilter destination = GetRequestPatch(file.Extension);
+            if (destination.IsExcess()) {
                 destination.LastFolderPatch = FolderHandler
                     .GetNewSubFolder(destination.RootFolderPatch);
                 destination.Counter = 0;
@@ -108,7 +108,7 @@ namespace Octoller.ASUF.Kernel.Processor {
             FileHandler.MovedFile(file, Path.Combine(destination.LastFolderPatch));
         }
 
-        private ITempFilter GetRequestPatch(string fileExtension) {
+        private TempFilter GetRequestPatch(string fileExtension) {
 
             foreach (var c in filtersLibrary) {
                 if (c.Key.Contains(fileExtension)) {
