@@ -19,21 +19,24 @@ using System;
 namespace Octoller.ASUF.Kernel.Processor {
 
     /// <summary>
-    /// 
+    /// Static class for working with files.
     /// </summary>
-    public class FileHandler {
+    public static class FileHandler {
 
         /// <summary>
-        /// 
+        /// Moves a folder to the specified directory.
         /// </summary>
-        /// <param name="file"></param>
-        /// <param name="destination"></param>
+        /// <param name="file"> Relocatable file. </param>
+        /// <param name="destination"> Destination directory address. </param>
         public static void MovedFile(FileInfo file, string destination) {
 
             if (File.Exists(destination + file.Name)) {
+
                 string newFullName = destination + Guid.NewGuid().ToString() + file.Extension;
                 File.Move(file.FullName, newFullName);
+
             } else {
+
                 File.Move(file.FullName, destination + file.Name);
             }
         }

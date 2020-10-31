@@ -13,12 +13,13 @@
  * ************************************************************************************************************************** 
  */
 
+using Octoller.ASUF.Kernel.ServiceObjects;
 using Octoller.ASUF.Kernel.Extension;
 using Octoller.ASUF.Kernel.Processor;
-using Octoller.ASUF.Kernel.ServiceObjects;
-using System;
-using System.Linq;
 using System.Windows;
+using System.Linq;
+using System;
+
 
 namespace Octoller.ASUF.DesktopApp.Support.Command {
 
@@ -51,11 +52,10 @@ namespace Octoller.ASUF.DesktopApp.Support.Command {
 
                 try {
 
-                    bool restart = false;
+                    bool restart = watcher.IsWatcing;
 
-                    if (watcher.IsWatcing) {
+                    if (restart) {
                         watcher.StopWatching();
-                        restart = true;
                     }
 
                     builder.SaveSettings(container);

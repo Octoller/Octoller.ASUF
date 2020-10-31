@@ -54,7 +54,7 @@ namespace Octoller.ASUF.Kernel.ServiceObjects {
         /// <summary>
         /// Сhecks if the size is exceeded.
         /// </summary>
-        /// <returns>Returns true if the size is exceeded.</returns>
+        /// <returns> Returns true if the size is exceeded. </returns>
         public virtual bool IsExcess() =>
             Counter > Limit;
 
@@ -69,8 +69,8 @@ namespace Octoller.ASUF.Kernel.ServiceObjects {
         /// <summary>
         /// Construction.
         /// </summary>
-        /// <param name="root">Root folder for sorting files of the selected type.</param>
-        /// <param name="limit">The size above which the new subfolder will be created.</param>
+        /// <param name="root"> Root folder for sorting files of the selected type. </param>
+        /// <param name="limit"> The size above which the new subfolder will be created. </param>
         public TempFilter(string root, double limit) {
 
             if (limit <= 0) {

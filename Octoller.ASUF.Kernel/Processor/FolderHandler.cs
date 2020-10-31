@@ -13,7 +13,6 @@
  * ************************************************************************************************************************** 
  */
 
-using Octoller.ASUF.Kernel.ServiceObjects;
 using System.Linq;
 using System.IO;
 using System;
@@ -21,65 +20,45 @@ using System;
 namespace Octoller.ASUF.Kernel.Processor {
 
     /// <summary>
-    /// 
+    /// Static class for working with directories.
     /// </summary>
-    public class FolderHandler {
+    public static class FolderHandler {
+
 
         /// <summary>
-        /// 
+        /// Checks the specified path, if the directory does not exist - creates it.
         /// </summary>
-        /// <param name="settings"></param>
-        public static void CreateFoldersIfNotFound(SettingsContainer settings) {
-
-            CreateDirectoryIfNotFound(settings.WatchedFolder);
-            CreateDirectoryIfNotFound(settings.FolderNotFilter);
-
-            foreach (var f in settings.Filters) {
-                CreateDirectoryIfNotFound(f.RootFolderPatch);
-            }
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="patch"></param>
-        /// <returns></returns>
+        /// <param name="patch"> Directory path. </param>
+        /// <returns> Return directory path. </returns>
         public static string CreateDirectoryIfNotFound(string patch) =>
-            (!Directory.Exists(patch)) ? Directory.CreateDirectory(patch).FullName : patch;
+            !Directory.Exists(patch) ? Directory.CreateDirectory(patch).FullName : patch;
 
         /// <summary>
-        /// 
+        /// Returns the path to the last timed subfolder in the sort root folder.
         /// </summary>
-        /// <param name="rootPatch"></param>
-        /// <returns></returns>
+        /// <param name="rootPatch"> Root directory path. </param>
+        /// <returns> Path of the last created directory. </returns>
         public static string GetLastFolder(string rootPatch) {
 
-            DirectoryInfo[] list;
-
             try {
-                list = (new DirectoryInfo(rootPatch)).GetDirectories();
-            } catch {
-                list = new DirectoryInfo[] { };
-            }
 
-            if (list.Any()) {
-
-                return list.OrderByDescending(di => di.CreationTime)
+                return (new DirectoryInfo(rootPatch)).GetDirectories()
+                    .OrderByDescending(di => di.CreationTime)
                     .First()
                     .FullName;
-            } else {
 
-                string newFolder = GetNewSubFolder(rootPatch);
-                CreateDirectoryIfNotFound(newFolder);
-                return newFolder;
+            } catch {
+
+                string newFolder = CreatePatchNewSubFolder(rootPatch);
+                return CreateDirectoryIfNotFound(newFolder);
             }
         }
 
         /// <summary>
-        /// 
+        /// Returns the size of a directory in megabytes.
         /// </summary>
-        /// <param name="patch"></param>
-        /// <returns></returns>
+        /// <param name="patch"> Directory path. </param>
+        /// <returns> Size of a directory in megabytes. </returns>
         public static double GetSizeFolder(string patch) {
 
             long size = 0;
@@ -90,19 +69,20 @@ namespace Octoller.ASUF.Kernel.Processor {
         }
 
         /// <summary>
-        /// 
+        /// Returns the number of files in a directory.
         /// </summary>
-        /// <param name="patch"></param>
-        /// <returns></returns>
+        /// <param name="patch"> Directory path. </param>
+        /// <returns> Number of files. </returns>
         public static int GetLenghtFolder(string patch) =>
             (new DirectoryInfo(patch)).GetFiles().Count();
 
         /// <summary>
-        /// 
+        /// Creates a new subfolder in the root folder. 
+        /// The current date and time in the format dd.MM.yy hh_mm_ss.
         /// </summary>
-        /// <param name="rootFolderPatch"></param>
-        /// <returns></returns>
-        public static string GetNewSubFolder(string rootFolderPatch) =>
+        /// <param name="rootFolderPatch"> Root directory path. </param>
+        /// <returns> Full name of the new subfolder. </returns>
+        public static string CreatePatchNewSubFolder(string rootFolderPatch) =>
            Path.Combine(rootFolderPatch, 
                DateTime.Now.ToString("dd.MM.yy hh_mm_ss"));
     }

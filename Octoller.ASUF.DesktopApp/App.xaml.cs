@@ -1,12 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Linq;
-using System.Reflection;
-using System.Resources;
+﻿/*
+ * **************************************************************************************************************************
+ *     _    ____  _   _ _____ 
+ *    / \  / ___|| | | |  ___|
+ *   / _ \ \___ \| | | | |_   
+ *  / ___ \ ___) | |_| |  _|  
+ * /_/   \_\____/ \___/|_|  
+ * 
+ * Octoller.ASUF
+ * Desctop.WPF
+ * 23.10.2020
+ * 
+ * ************************************************************************************************************************** 
+ */
+
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
 
 namespace Octoller.ASUF.DesktopApp {

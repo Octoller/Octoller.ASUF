@@ -21,17 +21,15 @@ using System;
 
 namespace Octoller.ASUF.Kernel.Extension {
 
-    /// <summary>
-    /// 
-    /// </summary>
     public static class Extension {
 
         /// <summary>
-        /// 
+        /// Returns the current folder counter depending 
+        /// on the specified reason for creating a new folder.
         /// </summary>
-        /// <param name="reson"></param>
-        /// <param name="rootPath"></param>
-        /// <returns></returns>
+        /// <param name="reson"> Reason for creating subfolder. </param>
+        /// <param name="rootPath"> Path to root folder. </param>
+        /// <returns> Number. </returns>
         public static double CurrentCount(this ReasonCreatingFolder reson, string rootPath) =>
             reson switch {
                 ReasonCreatingFolder.OverflowAmount =>
@@ -43,11 +41,12 @@ namespace Octoller.ASUF.Kernel.Extension {
             };
 
         /// <summary>
-        /// 
+        /// Returns the value by which to increase the counter 
+        /// depending on the reason for creating a new subfolder.
         /// </summary>
-        /// <param name="reson"></param>
-        /// <param name="file"></param>
-        /// <returns></returns>
+        /// <param name="reson"> Reason for creating subfolder. </param>
+        /// <param name="file"> Save file. </param>
+        /// <returns> Returns the value by which to increase the counter. </returns>
         public static double AddCount(this ReasonCreatingFolder reson, FileInfo file) =>
             reson switch {
                 ReasonCreatingFolder.OverflowAmount => 1,
@@ -57,29 +56,30 @@ namespace Octoller.ASUF.Kernel.Extension {
             };
 
         /// <summary>
-        /// 
+        /// Сhecks the settings object for installed data.
         /// </summary>
-        /// <param name="unit"></param>
-        /// <returns></returns>
+        /// <param name="unit"> Settings object. </param>
+        /// <returns> True if property in settings object not set or settings object is null. </returns>
         public static bool Empty(this SettingsContainer unit) =>
-            ((unit.Filters == null || !unit.Filters.Any())
+            (unit is null) || ((unit.Filters == null || !unit.Filters.Any())
             || string.IsNullOrEmpty(unit.WatchedFolder)
             || string.IsNullOrEmpty(unit.FolderNotFilter));
 
         /// <summary>
-        /// 
+        /// Сhecks the sort filter for installed data.
         /// </summary>
-        /// <param name="unit"></param>
-        /// <returns></returns>
+        /// <param name="unit"> Sort filter </param>
+        /// <returns> True if property in sort filter not set or sort filter is null. </returns>
         public static bool Empty(this SortFilter unit) =>
-            unit.Extension == null || !unit.Extension.Any()
+            (unit is null) || unit.Extension == null || !unit.Extension.Any()
             || string.IsNullOrEmpty(unit.RootFolderPatch);
 
         /// <summary>
-        /// 
+        /// Splits the input string into an array of strings and 
+        /// puts it in an object SortFilter property Extension.
         /// </summary>
-        /// <param name="filter"></param>
-        /// <param name="input"></param>
+        /// <param name="filter"> Sort filter. </param>
+        /// <param name="input"> Input string. </param>
         public static void SplitStringExtension(this SortFilter filter, string input) =>
             filter.Extension = input.Replace(" ", "")
             .Split(new[] { ";", }, StringSplitOptions.RemoveEmptyEntries)
@@ -87,10 +87,10 @@ namespace Octoller.ASUF.Kernel.Extension {
             .ToArray();
 
         /// <summary>
-        /// 
+        /// Returns a string representation of the Extension property from a SortFilter object.
         /// </summary>
-        /// <param name="filter"></param>
-        /// <returns></returns>
+        /// <param name="filter"> Sort filter. </param>
+        /// <returns> String representation of the Extension property. </returns>
         public static string ExtensionArrayToString(this SortFilter filter) =>
             String.Join("; ", filter.Extension);
     }

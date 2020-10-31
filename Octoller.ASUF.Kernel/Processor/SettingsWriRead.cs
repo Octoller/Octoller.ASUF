@@ -18,6 +18,7 @@ using Octoller.ASUF.Kernel.Extension;
 using System.IO;
 using System.Text;
 using System.Text.Json;
+using System;
 
 namespace Octoller.ASUF.Kernel.Processor {
 
@@ -44,10 +45,8 @@ namespace Octoller.ASUF.Kernel.Processor {
         /// <summary>
         /// Reads settings from a file.
         /// </summary>
-        /// <returns>New settings object</returns>
-        /// <exception cref="IOException">
-        /// Called if the settings file is empty.
-        /// </exception>
+        /// <returns> New settings object </returns>
+        /// <exception cref="IOException"> Called if the settings file is empty. </exception>
         public SettingsContainer ReadSettingFile() {
 
             using (var fs = File.Open(GetFilePath(), FileMode.OpenOrCreate)) {
@@ -65,17 +64,14 @@ namespace Octoller.ASUF.Kernel.Processor {
         }
 
         /// <summary>
-        /// 
+        /// Writes settings to a file.
         /// </summary>
-        /// <param name="unit"></param>
-        public void WriteSettingFile(SettingsContainer unit) {
+        /// <param name="newSettings"> New settings object. </param>
+        public void WriteSettingFile(SettingsContainer newSettings) {
 
-            if (!unit.Empty()) {
-
-                using (var fs = File.CreateText(GetFilePath())) {
-                    string jsonString = JsonSerializer.Serialize(unit, jsonOptions);
-                    fs.Write(jsonString);
-                }
+            using (var fs = File.CreateText(GetFilePath())) {
+                string jsonString = JsonSerializer.Serialize(newSettings, jsonOptions);
+                fs.Write(jsonString);
             }
         }
 

@@ -15,12 +15,12 @@
 
 using Octoller.ASUF.Kernel.ServiceObjects;
 using Octoller.ASUF.Kernel.Extension;
+using System.Collections.ObjectModel;
 using System.Collections.Generic;
 using System.Threading;
 using System.Linq;
 using System.IO;
 using System;
-using System.Collections.ObjectModel;
 
 namespace Octoller.ASUF.Kernel.Processor {
 
@@ -84,7 +84,7 @@ namespace Octoller.ASUF.Kernel.Processor {
         /// <summary>
         /// Set new settings.
         /// </summary>
-        /// <param name="settings">New object settings.</param>
+        /// <param name="settings"> New object settings. </param>
         /// <exception cref="InvalidOperationException">
         /// Issued if the tracking process has not been stopped before installation.
         /// </exception>
@@ -121,7 +121,7 @@ namespace Octoller.ASUF.Kernel.Processor {
             if (destination.IsExcess()) {
 
                 destination.LastFolderPatch = FolderHandler
-                    .GetNewSubFolder(destination.RootFolderPatch);
+                    .CreatePatchNewSubFolder(destination.RootFolderPatch);
                 destination.Counter = 0;
             }
 

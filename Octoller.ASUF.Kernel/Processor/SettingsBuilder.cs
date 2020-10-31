@@ -34,65 +34,50 @@ namespace Octoller.ASUF.Kernel.Processor {
         private const int DEFAULT_LIMIT = 50;
 
         private SettingsWriRead settingsWR;
-        private SettingsContainer currentSettings;
 
         /// <summary>
-        /// 
+        /// Default construction.
         /// </summary>
         public SettingsBuilder() {
             
             settingsWR = new SettingsWriRead();
-            currentSettings = new SettingsContainer();
         }
 
         /// <summary>
-        /// 
+        /// Reads settings from a file.
         /// </summary>
-        /// <returns></returns>
+        /// <returns> SettingsContainer </returns>
         public SettingsContainer GetSettings() {
-            
-            if (currentSettings is null) {
-                currentSettings = new SettingsContainer();
-            }
 
-            if (currentSettings.Empty()) {
-
-                try {
-                    currentSettings = settingsWR.ReadSettingFile();
-                } catch (IOException ex) {
-                    ////TODO: Можно будет реализовать запись ошибок в лог-документ
-                    currentSettings = CreateDefaultSettings();
-                    settingsWR.WriteSettingFile(currentSettings);
-                }
-            }
-
-            return currentSettings;
+            try {
+                return settingsWR.ReadSettingFile();
+            } catch (IOException ex) {
+                ////TODO: Можно будет реализовать запись ошибок в лог-документ
+                return new SettingsContainer();
+            } 
         }
 
         /// <summary>
-        /// 
+        /// Save new settings in a file.
         /// </summary>
-        /// <param name="settings"></param>
+        /// <param name="settings"> New settings </param>
         public void SaveSettings(SettingsContainer settings) {
-
-            if (!settings.Empty()) {
-                settingsWR.WriteSettingFile(settings);
+            
+            if (settings.Empty()) {
+                throw new ArgumentException("Attempting to write an empty settings object.");
             }
+
+            settingsWR.WriteSettingFile(settings);
         }
 
         /// <summary>
-        /// 
+        /// Creates a settings object filled with default values.
         /// </summary>
-        /// <returns></returns>
+        /// <returns> New object settings. </returns>
         public SettingsContainer CreateDefaultSettings() {
-
-            var settings = new SettingsContainer();
 
             string root = FolderHandler
                 .CreateDirectoryIfNotFound(Path.Combine(Directory.GetCurrentDirectory(), defoltRootFolder));
-
-            string temp = FolderHandler
-                .CreateDirectoryIfNotFound(Path.Combine(root, defoltTempFolder));
 
             string sorted = FolderHandler.
                 CreateDirectoryIfNotFound(Path.Combine(root, sortedRootFolder));
@@ -123,14 +108,16 @@ namespace Octoller.ASUF.Kernel.Processor {
                  }
             };
 
+            var settings = new SettingsContainer() {
+
+                WatchedFolder = FolderHandler
+                    .CreateDirectoryIfNotFound(Path.Combine(root, defoltTempFolder)),
+
+                FolderNotFilter = FolderHandler
+                    .CreateDirectoryIfNotFound(Path.Combine(sorted, otherFolder))
+            };
+
             Array.ForEach(arrayFilters, f => settings.Filters.Add(f));
-
-            settings.WatchedFolder = temp;
-            string tempPath = FolderHandler
-                .CreateDirectoryIfNotFound(Path.Combine(sorted, otherFolder));
-            Debug.Print("Default: " + tempPath);
-            settings.FolderNotFilter = tempPath;
-
 
             return settings;
         }

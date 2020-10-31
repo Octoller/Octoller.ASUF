@@ -14,10 +14,10 @@
  */
 
 using Octoller.ASUF.Kernel.ServiceObjects;
-using System;
 using System.Globalization;
-using System.Linq;
 using System.Windows.Data;
+using System.Linq;
+using System;
 
 namespace Octoller.ASUF.DesktopApp.Support {
 
@@ -37,7 +37,6 @@ namespace Octoller.ASUF.DesktopApp.Support {
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) =>
             (ReasonCreatingFolder)Enum.GetValues(targetType).GetValue((int)value);
-
     }
 
     public class ExtensionArrayToStringConvert : IValueConverter {
