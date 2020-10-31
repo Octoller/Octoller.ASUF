@@ -23,10 +23,16 @@ namespace Octoller.ASUF.Kernel.Processor {
 
     using static Octoller.ASUF.Kernel.Resource.DefaultPath;
 
+    /// <summary>
+    /// Class for reading settings from file and writing.
+    /// </summary>
     public sealed class SettingsWriRead {
 
         private JsonSerializerOptions jsonOptions;
 
+        /// <summary>
+        /// Default construction.
+        /// </summary>
         public SettingsWriRead() {
 
             jsonOptions = new JsonSerializerOptions {
@@ -35,23 +41,33 @@ namespace Octoller.ASUF.Kernel.Processor {
             };
         }
 
+        /// <summary>
+        /// Reads settings from a file.
+        /// </summary>
+        /// <returns>New settings object</returns>
+        /// <exception cref="IOException">
+        /// Called if the settings file is empty.
+        /// </exception>
         public SettingsContainer ReadSettingFile() {
 
             using (var fs = File.Open(GetFilePath(), FileMode.OpenOrCreate)) {
 
-                if (fs.Length > 0) {
-
-                    byte[] fsArray = new byte[fs.Length];
-                    fs.Read(fsArray, 0, fsArray.Length);
-
-                    string jsonString = Encoding.Default.GetString(fsArray);
-                    return JsonSerializer.Deserialize<SettingsContainer>(jsonString, jsonOptions);
-                } else {
-                    return new SettingsContainer();
+                if (fs.Length <= 0) {
+                    throw new IOException("File is empty");
                 }
+
+                byte[] fsArray = new byte[fs.Length];
+                fs.Read(fsArray, 0, fsArray.Length);
+
+                string jsonString = Encoding.Default.GetString(fsArray);
+                return JsonSerializer.Deserialize<SettingsContainer>(jsonString, jsonOptions);
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="unit"></param>
         public void WriteSettingFile(SettingsContainer unit) {
 
             if (!unit.Empty()) {

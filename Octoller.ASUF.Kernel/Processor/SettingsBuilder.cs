@@ -13,17 +13,20 @@
  * ************************************************************************************************************************** 
  */
 
-using Octoller.ASUF.Kernel.Extension;
 using Octoller.ASUF.Kernel.ServiceObjects;
-using System;
+using Octoller.ASUF.Kernel.Extension;
 using System.Diagnostics;
 using System.IO;
+using System;
 
 namespace Octoller.ASUF.Kernel.Processor {
 
     using static Octoller.ASUF.Kernel.Resource.DefaultExtension;
     using static Octoller.ASUF.Kernel.Resource.DefaultPath;
 
+    /// <summary>
+    /// 
+    /// </summary>
     public sealed class SettingsBuilder {
 
         private const ReasonCreatingFolder DEFAULT_REASON
@@ -33,12 +36,19 @@ namespace Octoller.ASUF.Kernel.Processor {
         private SettingsWriRead settingsWR;
         private SettingsContainer currentSettings;
 
+        /// <summary>
+        /// 
+        /// </summary>
         public SettingsBuilder() {
             
             settingsWR = new SettingsWriRead();
             currentSettings = new SettingsContainer();
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         public SettingsContainer GetSettings() {
             
             if (currentSettings is null) {
@@ -46,8 +56,11 @@ namespace Octoller.ASUF.Kernel.Processor {
             }
 
             if (currentSettings.Empty()) {
-                currentSettings = settingsWR.ReadSettingFile();
-                if (currentSettings.Empty()) {
+
+                try {
+                    currentSettings = settingsWR.ReadSettingFile();
+                } catch (IOException ex) {
+                    ////TODO: Можно будет реализовать запись ошибок в лог-документ
                     currentSettings = CreateDefaultSettings();
                     settingsWR.WriteSettingFile(currentSettings);
                 }
@@ -56,6 +69,10 @@ namespace Octoller.ASUF.Kernel.Processor {
             return currentSettings;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="settings"></param>
         public void SaveSettings(SettingsContainer settings) {
 
             if (!settings.Empty()) {
@@ -63,9 +80,10 @@ namespace Octoller.ASUF.Kernel.Processor {
             }
         }
 
-        public void ReloadSettings() =>
-            currentSettings = settingsWR.ReadSettingFile();
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         public SettingsContainer CreateDefaultSettings() {
 
             var settings = new SettingsContainer();

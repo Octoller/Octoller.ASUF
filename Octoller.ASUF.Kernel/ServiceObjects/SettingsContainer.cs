@@ -13,25 +13,33 @@
  * ************************************************************************************************************************** 
  */
 
-using System;
+using System.Runtime.CompilerServices;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.IO;
-using System.Runtime.CompilerServices;
+using System;
 
 namespace Octoller.ASUF.Kernel.ServiceObjects {
 
+    /// <summary>
+    /// Сontainer class for grouping, saving and loading settings.
+    /// </summary>
     public sealed class SettingsContainer : INotifyPropertyChanged {
 
         private string watchedFolder;
         private string folderNotFilter;
         private SortFilter selectedFilter;
 
+        /// <summary>
+        /// Observable filter collection.
+        /// </summary>
         public ObservableCollection<SortFilter> Filters {
             get; set;
         } = new ObservableCollection<SortFilter>();
 
+        /// <summary>
+        /// Filter currently selected from the collection.
+        /// </summary>
         public SortFilter SelectedFilter {
             get => selectedFilter;
             set {
@@ -40,6 +48,9 @@ namespace Octoller.ASUF.Kernel.ServiceObjects {
             }
         }
 
+        /// <summary>
+        /// Current watched directory.
+        /// </summary>
         public string WatchedFolder {
             get => watchedFolder;
             set {
@@ -52,6 +63,9 @@ namespace Octoller.ASUF.Kernel.ServiceObjects {
             }
         }
 
+        /// <summary>
+        /// Directory for extension files which do not match filters.
+        /// </summary>
         public string FolderNotFilter {
             get => folderNotFilter;
             set {
@@ -65,6 +79,7 @@ namespace Octoller.ASUF.Kernel.ServiceObjects {
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
+
         private void OnPropertyChanged([CallerMemberName] string prop = "") {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(prop));
         }

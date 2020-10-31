@@ -67,7 +67,7 @@ namespace Octoller.ASUF.Kernel.ServiceObjects {
         }
 
         /// <summary>
-        /// Constructor.
+        /// Construction.
         /// </summary>
         /// <param name="root">Root folder for sorting files of the selected type.</param>
         /// <param name="limit">The size above which the new subfolder will be created.</param>

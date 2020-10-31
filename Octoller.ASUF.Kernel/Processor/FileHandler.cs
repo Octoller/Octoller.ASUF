@@ -13,13 +13,21 @@
  * ************************************************************************************************************************** 
  */
 
-using System;
 using System.IO;
+using System;
 
 namespace Octoller.ASUF.Kernel.Processor {
 
+    /// <summary>
+    /// 
+    /// </summary>
     public class FileHandler {
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="file"></param>
+        /// <param name="destination"></param>
         public static void MovedFile(FileInfo file, string destination) {
 
             if (File.Exists(destination + file.Name)) {

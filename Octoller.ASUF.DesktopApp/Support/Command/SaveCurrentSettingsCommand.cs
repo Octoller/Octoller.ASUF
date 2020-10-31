@@ -58,10 +58,8 @@ namespace Octoller.ASUF.DesktopApp.Support.Command {
                         restart = true;
                     }
 
-                    watcher.UnSubscrible();
                     builder.SaveSettings(container);
                     watcher.ApplySettings(container);
-                    watcher.Subscrible();
 
                     if (restart) {
                        watcher.StartWatching();

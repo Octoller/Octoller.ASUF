@@ -13,13 +13,15 @@
  * ************************************************************************************************************************** 
  */
 
-using System;
+using System.Runtime.CompilerServices;
 using System.ComponentModel;
 using System.IO;
-using System.Runtime.CompilerServices;
+using System;
 
 namespace Octoller.ASUF.Kernel.ServiceObjects {
-
+    /// <summary>
+    /// Filter class for sorting files by extension group.
+    /// </summary>
     public sealed class SortFilter : INotifyPropertyChanged {
 
         private string[] extension;
@@ -28,7 +30,9 @@ namespace Octoller.ASUF.Kernel.ServiceObjects {
         private ReasonCreatingFolder reasonCreating
             = ReasonCreatingFolder.None;
 
-
+        /// <summary>
+        /// Stores an array of string representations of file extensions.
+        /// </summary>
         public string[] Extension {
             get => extension;
             set {
@@ -37,6 +41,9 @@ namespace Octoller.ASUF.Kernel.ServiceObjects {
             }
         }
 
+        /// <summary>
+        /// Provides the address of the root directory for sorting files of the specified extension.
+        /// </summary>
         public string RootFolderPatch {
             get => rootFolderPatch;
             set {
@@ -46,10 +53,12 @@ namespace Octoller.ASUF.Kernel.ServiceObjects {
                     rootFolderPatch = value;
                     OnPropertyChanged();
                 }
-                
             }
         }
 
+        /// <summary>
+        /// Reason for creating a new subfolder.
+        /// </summary>
         public ReasonCreatingFolder ReasonCreating {
             get => reasonCreating;
             set {
@@ -58,6 +67,9 @@ namespace Octoller.ASUF.Kernel.ServiceObjects {
             }
         }
 
+        /// <summary>
+        /// The size above which the new subfolder will be created.
+        /// </summary>
         public int Limit {
             get => limit;
             set {
@@ -66,11 +78,13 @@ namespace Octoller.ASUF.Kernel.ServiceObjects {
                 } else {
                     limit = value;
                     OnPropertyChanged();
-                }
-                    
+                }   
             }
         }
 
+        /// <summary>
+        /// Default construction.
+        /// </summary>
         public SortFilter() { }
 
         public event PropertyChangedEventHandler PropertyChanged;

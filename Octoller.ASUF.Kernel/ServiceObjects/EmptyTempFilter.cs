@@ -15,6 +15,10 @@
 
 namespace Octoller.ASUF.Kernel.ServiceObjects {
 
+    /// <summary>
+    /// Empty filter
+    /// </summary>
+    
     public class EmptyTempFilter : TempFilter {
 
         public override string LastFolderPatch {
