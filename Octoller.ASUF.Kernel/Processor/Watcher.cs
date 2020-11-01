@@ -37,11 +37,21 @@ namespace Octoller.ASUF.Kernel.Processor {
 
         private TempFilter folderNotFilter;
 
+        public event Action<WatcherMovedEventArg> OnMoveFile;
+
         /// <summary>
         /// Returns true if tracking is started.
         /// </summary>
         public bool IsWatcing {
             get => systemWatcher.EnableRaisingEvents;
+        }
+
+        /// <summary>
+        /// Returns true if there are settings set.
+        /// </summary>
+        public bool IsAplaySettings {
+            get => !string.IsNullOrEmpty(systemWatcher.Path)
+                && filtersLibrary.Any();
         }
 
         /// <summary>
@@ -127,7 +137,10 @@ namespace Octoller.ASUF.Kernel.Processor {
 
             FolderHandler.CreateDirectoryIfNotFound(destination.LastFolderPatch);
             destination.Counter += destination.ReasonCreating.AddCount(file);
-            FileHandler.MovedFile(file, Path.Combine(destination.LastFolderPatch));
+            
+            var movedFileInfo = FileHandler.MovedFile(file, Path.Combine(destination.LastFolderPatch));
+
+            OnMoveFile?.Invoke(new WatcherMovedEventArg(movedFileInfo));
         }
 
         private TempFilter GetRequestPatch(string fileExtension) {

@@ -5,8 +5,12 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:kernel="clr-namespace:Octoller.ASUF.Kernel.ServiceObjects;assembly=Octoller.ASUF.Kernel"
         xmlns:support="clr-namespace:Octoller.ASUF.DesktopApp.Support"
+        xmlns:try="http://www.hardcodet.net/taskbar"
         mc:Ignorable="d"
-        Title="ASUF" Height="374" Width="654" WindowStyle="ThreeDBorderWindow" ResizeMode="NoResize" >
+        Title="ASUF" Height="374" Width="654"
+        MaxHeight="374" MaxWidth="654"
+        MinHeight="374" MinWidth="654" Icon="/app_icons.ico">
+
     <Window.Resources>
         <!-- Styling to focus on ListBox items on hover -->
         <Style x:Key="boxItemStyle" TargetType="ListBoxItem">
@@ -16,14 +20,14 @@
                 </Trigger>
             </Style.Triggers>
         </Style>
-        
+
         <!-- label style -->
         <Style x:Key="labelItemStyle" TargetType="Label">
             <Setter Property="Height" Value="16"/>
             <Setter Property="Padding" Value="5,0,5,0"/>
             <Setter Property="HorizontalContentAlignment" Value="Left"/>
         </Style>
-        
+
         <!-- TextBox style -->
         <Style x:Key="textBoxBaseStyle" TargetType="TextBox">
             <Setter Property="TextWrapping" Value="NoWrap"/>
@@ -62,28 +66,70 @@
             <Setter Property="Width" Value="34"/>
         </Style>
     </Window.Resources>
+    
     <Grid>
-        <TabControl SelectedIndex="1">
+        <TabControl SelectedIndex="0">
             <TabItem Header="Main" Margin="-2,-2,-20,0">
                 <Grid Background="#FFE5E5E5">
+                    <Label Content="Current Session:" Margin="221,10,0,0" Style="{StaticResource labelItemStyle}" 
+                               VerticalAlignment="Top" HorizontalAlignment="Left" Width="96"/>
                     <Grid Margin="0,0,441,0">
-                        <Button Name="_btStart" Content="Start" Margin="0,24,0,0"
-                                Style="{StaticResource btnControllStyle}" HorizontalAlignment="Center"/>
+                        <Button Name="_btStart" Margin="0,24,0,0" HorizontalAlignment="Center"
+                                Content="{Binding Path=CommandController.StartCommand.Text}"
+                                Command="{Binding Path=CommandController.StartCommand}"
+                                CommandParameter="{Binding Path=SettingsContainer}"
+                                Style="{StaticResource btnControllStyle}" />
 
-                        <Button Name="_btStop" Content="Stop" Margin="0,63,0,0" 
-                                Style="{StaticResource btnControllStyle}" HorizontalAlignment="Center"/>
+                        <Button Name="_btStop"  Margin="0,63,0,0" HorizontalAlignment="Center"
+                                Content="{Binding Path=CommandController.StopCommand.Text}"
+                                Command="{Binding Path=CommandController.StopCommand}"
+                                CommandParameter="{Binding Path=SettingsContainer}"
+                                Style="{StaticResource btnControllStyle}" />
                     </Grid>
-                    <Grid Margin="180,0,0,0">
-                        <ListView Margin="34,0,0,0">
+                    <Grid Margin="212,0,0,0">
+
+                        <ListView x:Name="lvMovedFile" Background="Lavender" Margin="10,29,0,0" Grid.IsSharedSizeScope="True" FontSize="8"
+                                  ItemsSource="{Binding Path=MovedFileCollection}">
                             <ListView.View>
                                 <GridView>
-                                    <GridViewColumn/>
-                                    <GridViewColumn/>
+                                    <GridViewColumn Header="Move Time" Width="60">
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBlock TextWrapping="WrapWithOverflow"  
+                                                           Text="{Binding Path=MovedTime}"/>
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                    </GridViewColumn>
+                                    <GridViewColumn Header="Name File" Width="90">
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBlock TextWrapping="WrapWithOverflow" 
+                                                           Text="{Binding Path=FileName}"/>
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                    </GridViewColumn>
+                                    <GridViewColumn Header=".*" Width="30">
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBlock TextWrapping="WrapWithOverflow" 
+                                                           Text="{Binding Path=FileExtension}"/>
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                    </GridViewColumn>
+                                    <GridViewColumn Header="Path" Width="200">
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBlock TextWrapping="WrapWithOverflow"  
+                                                           Text="{Binding Path=FilePath}"/>
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                    </GridViewColumn>
                                 </GridView>
                             </ListView.View>
                         </ListView>
                     </Grid>
                 </Grid>
+
             </TabItem>
             <TabItem x:Name="_settingsTabItem" Header="Settings" Margin="21,-2,-27,0">
                 <Grid Background="#FFE5E5E5" VerticalAlignment="Top" Height="328">
@@ -137,7 +183,7 @@
                     <Label Content="Folder Not Filter:" Margin="0,277,336,35" 
                            HorizontalAlignment="Right" Width="105"
                            Style="{StaticResource labelItemStyle}" />
-                    
+
                     <TextBox x:Name="_tbWatchedFolder" Margin="312,256,0,0" Width="256" Style="{StaticResource textBoxBaseStyle}" 
                              DataContext="{Binding Path=SettingsContainer}" IsReadOnly="True"
                              Text="{Binding Path=WatchedFolder}"/>
@@ -171,6 +217,9 @@
                             Command="{Binding Path=CommandController.FolderNotFilterSelectCommand}"
                             CommandParameter="{Binding Path=SettingsContainer}"/>
                 </Grid>
+            </TabItem>
+            <TabItem x:Name="_aboutTabItem" Header="About Octoller" Margin="29,-2,-35,0">
+
             </TabItem>
         </TabControl>
     </Grid>

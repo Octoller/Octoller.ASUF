@@ -7,11 +7,26 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="bin\**" />
+    <EmbeddedResource Remove="bin\**" />
+    <None Remove="bin\**" />
+    <Page Remove="bin\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="app_icons.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Octoller.ASUF.Kernel\Octoller.ASUF.Kernel.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Ookii.Dialogs" Version="1.1.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="app_icons.ico" />
   </ItemGroup>
 
 </Project>

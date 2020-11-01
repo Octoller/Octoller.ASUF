@@ -1,7 +1,21 @@
-﻿using Octoller.ASUF.Kernel.Extension;
-using Octoller.ASUF.Kernel.Processor;
+﻿/*
+ * **************************************************************************************************************************
+ *     _    ____  _   _ _____ 
+ *    / \  / ___|| | | |  ___|
+ *   / _ \ \___ \| | | | |_   
+ *  / ___ \ ___) | |_| |  _|  
+ * /_/   \_\____/ \___/|_|  
+ * 
+ * Octoller.ASUF
+ * Library
+ * 1.11.2020
+ * 
+ * ************************************************************************************************************************** 
+ */
+
 using Octoller.ASUF.Kernel.ServiceObjects;
-using System;
+using Octoller.ASUF.Kernel.Extension;
+using Octoller.ASUF.Kernel.Processor;
 
 namespace Octoller.ASUF.DesktopApp.Support.Command {
     public class CancelСhangesCommand : CommandBase {

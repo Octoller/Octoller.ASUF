@@ -18,16 +18,22 @@ using Octoller.ASUF.Kernel.ServiceObjects;
 using System.Runtime.CompilerServices;
 using Octoller.ASUF.Kernel.Processor;
 using System.ComponentModel;
+using Octoller.ASUF.Kernel.Extension;
+using System.Collections.ObjectModel;
+using System.Diagnostics;
 
 namespace Octoller.ASUF.DesktopApp.View {
 
     public class ASUFApplicationViewModel : INotifyPropertyChanged {
 
-        private SettingsBuilder settingsBuilder;
-        private Watcher watcher;
-
         private SettingsContainer settingsContainer;
         private CommandController commandController;
+        private readonly SettingsBuilder settingsBuilder;
+        private readonly Watcher watcher;
+
+        public ObservableCollection<WatcherMovedEventArg> MovedFileCollection {
+            get; set;
+        } = new ObservableCollection<WatcherMovedEventArg>();
 
         public SettingsContainer SettingsContainer {
             get => settingsContainer;
@@ -47,6 +53,19 @@ namespace Octoller.ASUF.DesktopApp.View {
             settingsBuilder = new SettingsBuilder();
             SettingsContainer = settingsBuilder.GetSettings();
             watcher = new Watcher();
+
+            if (!SettingsContainer.Empty()) {
+
+                if (!watcher.IsWatcing) {
+                    watcher.ApplySettings(SettingsContainer);
+                }
+            }
+
+            watcher.OnMoveFile += (arg) => {
+                App.Current.Dispatcher.Invoke(new System.Action(
+                    () => MovedFileCollection.Add(arg)
+                ));
+            };
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

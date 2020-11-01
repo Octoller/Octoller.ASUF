@@ -21,13 +21,11 @@ namespace Octoller.ASUF.DesktopApp {
     public partial class App : Application {
 
         private Mutex instanceMutex = null;
-        private static string appName = "Octoller.ASUF";
+        private static readonly string appName = "Octoller.ASUF";
 
         protected override void OnStartup(StartupEventArgs e) {
 
-            bool createNew;
-
-            instanceMutex = new Mutex(true, appName, out createNew);
+            instanceMutex = new Mutex(true, appName, out bool createNew);
 
             if (!createNew) {
                 instanceMutex = null;
@@ -46,6 +44,5 @@ namespace Octoller.ASUF.DesktopApp {
 
             base.OnExit(e);
         }
-
     }
 }

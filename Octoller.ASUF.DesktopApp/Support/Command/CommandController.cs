@@ -22,6 +22,9 @@ namespace Octoller.ASUF.DesktopApp.Support.Command {
         private readonly SettingsBuilder settingsBuilder;
         private readonly Watcher watcher;
 
+        private CommandBase startCommand;
+        private CommandBase stopCommand;
+
         private CommandBase addFilterCommand;
         private CommandBase defaultSettingsCommand;
         private CommandBase saveSettingsCommand;
@@ -35,6 +38,16 @@ namespace Octoller.ASUF.DesktopApp.Support.Command {
 
         public CommandController() { }
 
+        public CommandBase StartCommand {
+            get => startCommand ??=
+                new StartWatchingCommand(watcher);
+        }
+
+        public CommandBase StopCommand {
+            get => stopCommand ??=
+                new StopWatchingCommand(watcher);
+        }
+
         public CommandBase AddFilterCommand {
             get => addFilterCommand ??=
                 new AddFilterInListCommand();
@@ -47,7 +60,7 @@ namespace Octoller.ASUF.DesktopApp.Support.Command {
 
         public CommandBase SaveSettingsCommand {
             get => saveSettingsCommand ??=
-                new SaveCurrentSettingsCommand(settingsBuilder, watcher);
+                new SaveAplaySettingsCommand(settingsBuilder, watcher);
         }
 
         public CommandBase WatchedFolderSelectCommand {

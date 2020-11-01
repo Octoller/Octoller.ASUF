@@ -14,17 +14,28 @@
  */
 
 using Octoller.ASUF.DesktopApp.View;
+using System;
 using System.Windows;
 
 namespace Octoller.ASUF.DesktopApp {
 
     public partial class MainWindow : Window {
 
+
+
+
         public MainWindow() {
 
             InitializeComponent();
 
             this.DataContext = new ASUFApplicationViewModel();
+            this.ShowInTaskbar = false;
         }
+
+        protected override void OnSourceInitialized(EventArgs e) {
+            base.OnSourceInitialized(e);
+
+        }
+
     }
 }

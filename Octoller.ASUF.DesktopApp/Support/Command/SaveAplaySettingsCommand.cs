@@ -23,15 +23,15 @@ using System;
 
 namespace Octoller.ASUF.DesktopApp.Support.Command {
 
-    public class SaveCurrentSettingsCommand : CommandBase {
+    public class SaveAplaySettingsCommand : CommandBase {
 
         private SettingsBuilder builder;
         private Watcher watcher;
 
-        public SaveCurrentSettingsCommand(SettingsBuilder builder, Watcher watcher) 
+        public SaveAplaySettingsCommand(SettingsBuilder builder, Watcher watcher) 
             : this(builder, watcher, "Save and aplay settings") { }
 
-        public SaveCurrentSettingsCommand(SettingsBuilder builder, Watcher watcher, string text)
+        public SaveAplaySettingsCommand(SettingsBuilder builder, Watcher watcher, string text)
             : base(text) {
 
             this.watcher = watcher;
