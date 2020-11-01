@@ -56,4 +56,23 @@ namespace Octoller.ASUF.DesktopApp.Support {
             .Where(s => !string.IsNullOrWhiteSpace(s))
             .ToArray();
     }
+
+    public class CheckNumberFolder : IValueConverter {
+
+public object Convert(object value, Type targetType, object parameter, CultureInfo culture) =>
+            value;
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) {
+
+            if (value != null && value is string input) {
+                if (int.TryParse(input, out int i)) {
+                    if (i > 0) {
+                        return i;
+                    }
+                }
+            }
+
+            return 0;
+        }
+    }
 }

@@ -70,7 +70,7 @@ namespace Octoller.ASUF.Kernel.ServiceObjects {
             get => folderNotFilter;
             set {
                 if (!Directory.Exists(value)) {
-                    throw new ArgumentException("Invalid directory path specified");
+                   throw new ArgumentException("Invalid directory path specified");
                 } else {
                     folderNotFilter = value;
                     OnPropertyChanged();

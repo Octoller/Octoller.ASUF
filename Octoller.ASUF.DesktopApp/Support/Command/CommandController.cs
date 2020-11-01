@@ -29,6 +29,7 @@ namespace Octoller.ASUF.DesktopApp.Support.Command {
         private CommandBase watchedFolderSelectCommand;
         private CommandBase folderNotFilterSelectCommand;
         private CommandBase filterRootFolderSelectCommand;
+        private CommandBase cancelChangesCommand;
 
         private CommandBase deleteFilterCommand;
 
@@ -70,6 +71,11 @@ namespace Octoller.ASUF.DesktopApp.Support.Command {
         public CommandBase DeleteFilterCommand {
             get => deleteFilterCommand ??=
                 new DeleteFilterCommand();
+        }
+
+        public CommandBase CancelChangesCommand {
+            get => cancelChangesCommand ??=
+                new CancelСhangesCommand(settingsBuilder);
         }
 
         public CommandController(SettingsBuilder settingsBuilder, Watcher watcher) {

@@ -1,35 +1,16 @@
-﻿/*
- * **************************************************************************************************************************
- *     _    ____  _   _ _____ 
- *    / \  / ___|| | | |  ___|
- *   / _ \ \___ \| | | | |_   
- *  / ___ \ ___) | |_| |  _|  
- * /_/   \_\____/ \___/|_|  
- * 
- * Octoller.ASUF
- * Desctop.WPF
- * 26.10.2020
- * 
- * ************************************************************************************************************************** 
- */
-
-
-using Octoller.ASUF.Kernel.ServiceObjects;
-using Octoller.ASUF.Kernel.Extension;
+﻿using Octoller.ASUF.Kernel.Extension;
 using Octoller.ASUF.Kernel.Processor;
+using Octoller.ASUF.Kernel.ServiceObjects;
+using System;
 
 namespace Octoller.ASUF.DesktopApp.Support.Command {
-
-    public class SetDefaultSettingsCommand : CommandBase {
+    public class CancelСhangesCommand : CommandBase {
 
         private SettingsBuilder builder;
 
-        public SetDefaultSettingsCommand(SettingsBuilder builder) 
-            : this (builder, "Set Default Settings") { }
+        public CancelСhangesCommand(SettingsBuilder builder) : this (builder, "CancelСhanges") { }
 
-        public SetDefaultSettingsCommand(SettingsBuilder builder, string text) 
-            : base(text) {
-
+        public CancelСhangesCommand(SettingsBuilder builder, string text) : base (text) {
             this.builder = builder;
         }
 
@@ -37,11 +18,15 @@ namespace Octoller.ASUF.DesktopApp.Support.Command {
             parameter != null && parameter is SettingsContainer;
 
         public override void Execute(object parameter) {
+            if (parameter is SettingsContainer containder) {
+                
+                var tempSettings = builder.GetSettings();
 
-            if (parameter is SettingsContainer container) {
+                if (tempSettings.Empty()) {
+                    tempSettings = builder.CreateDefaultSettings();
+                }
 
-                var tempContainer = builder.CreateDefaultSettings();
-                WriteInContainer(container, tempContainer);
+                WriteInContainer(containder, tempSettings);
             }
         }
 

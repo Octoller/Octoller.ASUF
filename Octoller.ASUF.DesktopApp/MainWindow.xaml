@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:kernel="clr-namespace:Octoller.ASUF.Kernel.ServiceObjects;assembly=Octoller.ASUF.Kernel"
+        xmlns:support="clr-namespace:Octoller.ASUF.DesktopApp.Support"
         mc:Ignorable="d"
         Title="ASUF" Height="374" Width="654" WindowStyle="ThreeDBorderWindow" ResizeMode="NoResize" >
     <Window.Resources>
@@ -15,32 +16,38 @@
                 </Trigger>
             </Style.Triggers>
         </Style>
-
+        
         <!-- label style -->
         <Style x:Key="labelItemStyle" TargetType="Label">
             <Setter Property="Height" Value="16"/>
             <Setter Property="Padding" Value="5,0,5,0"/>
             <Setter Property="HorizontalContentAlignment" Value="Left"/>
         </Style>
-
+        
         <!-- TextBox style -->
-        <Style x:Key="textBoxItemStyle" TargetType="TextBox">
+        <Style x:Key="textBoxBaseStyle" TargetType="TextBox">
             <Setter Property="TextWrapping" Value="NoWrap"/>
             <Setter Property="VerticalAlignment" Value="Top"/>
             <Setter Property="HorizontalAlignment" Value="Left"/>
             <Setter Property="MaxLines" Value="1"/>
             <Setter Property="Padding" Value="0,-2,0,0"/>
             <Setter Property="Height" Value="16"/>
-        </Style>
-
-        <!-- Basic style for setting a parameter to a command -->
-        <Style x:Key="commandParametrControll" TargetType="Button">
-            <Setter Property="CommandParameter" Value="{Binding Path=SettingsContainer}"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type TextBox}">
+                        <Border CornerRadius="2" BorderBrush="{TemplateBinding BorderBrush}" 
+                                BorderThickness="{TemplateBinding BorderThickness}" 
+                                Background="{TemplateBinding Background}">
+                            <ScrollViewer x:Name="PART_ContentHost" 
+                                    SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
         </Style>
 
         <!-- Style for control buttons -->
-        <Style x:Key="btnControllStyle" TargetType="Button" 
-               BasedOn="{StaticResource commandParametrControll}">
+        <Style x:Key="btnControllStyle" TargetType="Button">
             <Setter Property="HorizontalAlignment" Value="Left"/>
             <Setter Property="VerticalAlignment" Value="Top"/>
             <Setter Property="Width" Value="154"/>
@@ -48,8 +55,7 @@
         </Style>
 
         <!-- Dialog button style -->
-            <Style x:Key="btnSelectFolderStyle" TargetType="Button"
-               BasedOn="{StaticResource commandParametrControll}">
+        <Style x:Key="btnSelectFolderStyle" TargetType="Button">
             <Setter Property="HorizontalAlignment" Value="Left"/>
             <Setter Property="VerticalAlignment" Value="Top"/>
             <Setter Property="Height" Value="16"/>
@@ -58,19 +64,17 @@
     </Window.Resources>
     <Grid>
         <TabControl SelectedIndex="1">
-
-            <TabItem Header="Main">
+            <TabItem Header="Main" Margin="-2,-2,-20,0">
                 <Grid Background="#FFE5E5E5">
                     <Grid Margin="0,0,441,0">
-                        <Button Name="_btStart" Content="Start" HorizontalAlignment="Center" 
-                                Margin="0,24,0,0" VerticalAlignment="Top" Width="116" Height="29"/>
+                        <Button Name="_btStart" Content="Start" Margin="0,24,0,0"
+                                Style="{StaticResource btnControllStyle}" HorizontalAlignment="Center"/>
 
-                        <Button Name="_btStop" Content="Stop" HorizontalAlignment="Center" 
-                                Margin="0,58,0,0" VerticalAlignment="Top" Width="116" Height="29"/>
-
+                        <Button Name="_btStop" Content="Stop" Margin="0,63,0,0" 
+                                Style="{StaticResource btnControllStyle}" HorizontalAlignment="Center"/>
                     </Grid>
                     <Grid Margin="180,0,0,0">
-                        <ListView>
+                        <ListView Margin="34,0,0,0">
                             <ListView.View>
                                 <GridView>
                                     <GridViewColumn/>
@@ -81,7 +85,7 @@
                     </Grid>
                 </Grid>
             </TabItem>
-            <TabItem x:Name="_settingsTabItem" Header="Settings">
+            <TabItem x:Name="_settingsTabItem" Header="Settings" Margin="21,-2,-27,0">
                 <Grid Background="#FFE5E5E5" VerticalAlignment="Top" Height="328">
                     <ListBox x:Name="_filtersBox" Margin="194,6,9,77" ScrollViewer.VerticalScrollBarVisibility="Visible" SelectedIndex="0"
                              ItemContainerStyle="{StaticResource boxItemStyle}" DataContext="{Binding Path=SettingsContainer}" 
@@ -90,28 +94,19 @@
                             <DataTemplate>
                                 <Grid Background="Gray"  UseLayoutRounding="False" Width="390" Height="74" MaxWidth="390" MinWidth="390" Cursor="Hand">
 
-                                    <Label Content="Extension" Margin="0,31,287,27" FontSize="11" Style="{StaticResource labelItemStyle}"/>
+                                    <Label Content="Extension" Margin="0,31,287,27" Style="{StaticResource labelItemStyle}"/>
                                     <Label Content="Root Folder" Margin="0,10,282,48" Style="{StaticResource labelItemStyle}"/>
                                     <Label Content="limit" Margin="0,52,287,6" Style="{StaticResource labelItemStyle}"/>
 
                                     <TextBox x:Name="_tbExtension" Margin="83,31,0,0" Width="275" 
-                                             Style="{StaticResource textBoxItemStyle}"  
+                                             Style="{StaticResource textBoxBaseStyle}"  
                                              Text="{Binding Path=Extension, Converter={StaticResource arrayToStringConvert}}"/>
 
-                                    <TextBox x:Name="_tbRoot" Margin="83,10,0,0" Width="236" 
-                                             Style="{StaticResource textBoxItemStyle}"
-                                             Text="{Binding Path=RootFolderPatch}"/>
+                                    <TextBox x:Name="_tbRoot" Margin="83,10,0,0" Width="236" Style="{StaticResource textBoxBaseStyle}"
+                                             Text="{Binding Path=RootFolderPatch}" IsReadOnly="True"/>
 
-                                    <TextBox x:Name="_tbLimit" Margin="83,52,0,0" Width="77"
-                                             Style="{StaticResource textBoxItemStyle}">
-                                        <TextBox.Text>
-                                            <Binding Path="Limit" UpdateSourceTrigger="PropertyChanged">
-                                                <Binding.ValidationRules>
-                                                    <ExceptionValidationRule/>
-                                                </Binding.ValidationRules>
-                                            </Binding>
-                                        </TextBox.Text>
-                                    </TextBox>
+                                    <TextBox x:Name="_tbLimit" Margin="83,52,0,0" Width="77" Style="{StaticResource textBoxBaseStyle}"
+                                             Text="{Binding Path=Limit, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource checkNumber}}"/>
 
                                     <ComboBox x:Name="_cbReason" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="165,52,0,0" Width="154" Height="16"  
                                             HorizontalContentAlignment="Left" VerticalContentAlignment="Center" Padding="5,-3,5,0"
@@ -133,7 +128,6 @@
                                 </Grid>
                             </DataTemplate>
                         </ListBox.ItemTemplate>
-
                     </ListBox>
 
                     <Label Content="Watched Folder:" Margin="0,256,336,56" 
@@ -143,28 +137,14 @@
                     <Label Content="Folder Not Filter:" Margin="0,277,336,35" 
                            HorizontalAlignment="Right" Width="105"
                            Style="{StaticResource labelItemStyle}" />
+                    
+                    <TextBox x:Name="_tbWatchedFolder" Margin="312,256,0,0" Width="256" Style="{StaticResource textBoxBaseStyle}" 
+                             DataContext="{Binding Path=SettingsContainer}" IsReadOnly="True"
+                             Text="{Binding Path=WatchedFolder}"/>
 
-                    <TextBox x:Name="_tbWatchedFolder" Margin="312,256,0,0" Width="256" Style="{StaticResource textBoxItemStyle}" 
-                             DataContext="{Binding Path=SettingsContainer, UpdateSourceTrigger=PropertyChanged}">
-                        <TextBox.Text>
-                            <Binding Path="WatchedFolder">
-                                <Binding.ValidationRules>
-                                    <ExceptionValidationRule/>
-                                </Binding.ValidationRules>
-                            </Binding>
-                        </TextBox.Text>
-                    </TextBox>
-
-                    <TextBox x:Name="_folderNotFilter" Margin="312,277,0,0" Width="256" Style="{StaticResource textBoxItemStyle}"
-                             DataContext="{Binding Path=SettingsContainer, UpdateSourceTrigger=PropertyChanged}">
-                        <TextBox.Text>
-                            <Binding Path="FolderNotFilter">
-                                <Binding.ValidationRules>
-                                    <ExceptionValidationRule/>
-                                </Binding.ValidationRules>
-                            </Binding>
-                        </TextBox.Text>
-                    </TextBox>
+                    <TextBox x:Name="_folderNotFilter" Margin="312,277,0,0" Width="256" Style="{StaticResource textBoxBaseStyle}"
+                             DataContext="{Binding Path=SettingsContainer}" IsReadOnly="True"
+                             Text="{Binding Path=FolderNotFilter}"/>
 
                     <Button x:Name="_btSave"  Margin="23,42,0,0" Style="{StaticResource btnControllStyle}"
                             Content="{Binding Path=CommandController.SaveSettingsCommand.Text}"
@@ -173,19 +153,23 @@
 
                     <Button x:Name="_btDefault" Margin="23,81,0,0" Style="{StaticResource btnControllStyle}"
                             Content="{Binding Path=CommandController.DefaultSettingsCommand.Text}"
-                            Command="{Binding Path=CommandController.DefaultSettingsCommand}"/>
+                            Command="{Binding Path=CommandController.DefaultSettingsCommand}"
+                            CommandParameter="{Binding Path=SettingsContainer}"/>
 
                     <Button x:Name="_btAddFilter" Margin="23,120,0,0" Style="{StaticResource btnControllStyle}"
-                            Content="{Binding Path=CommandController.AddFilterCommand.Text}"
-                            Command="{Binding Path=CommandController.AddFilterCommand}"/>
+                            Content="{Binding Path=CommandController.CancelChangesCommand.Text}"
+                            Command="{Binding Path=CommandController.CancelChangesCommand}"
+                            CommandParameter="{Binding Path=SettingsContainer}"/>
 
                     <Button x:Name="_btSelectWatched" Content="..." Margin="573,257,0,0" 
                             Style="{StaticResource btnSelectFolderStyle}"
-                            Command="{Binding Path=CommandController.WatchedFolderSelectCommand}"/>
+                            Command="{Binding Path=CommandController.WatchedFolderSelectCommand}"
+                            CommandParameter="{Binding Path=SettingsContainer}"/>
 
                     <Button x:Name="_btSelectNotFilter" Content="..." Margin="573,278,0,0" 
                             Style="{StaticResource btnSelectFolderStyle}"
-                            Command="{Binding Path=CommandController.FolderNotFilterSelectCommand}"/>
+                            Command="{Binding Path=CommandController.FolderNotFilterSelectCommand}"
+                            CommandParameter="{Binding Path=SettingsContainer}"/>
                 </Grid>
             </TabItem>
         </TabControl>

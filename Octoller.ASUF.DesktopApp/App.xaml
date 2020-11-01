@@ -2,11 +2,12 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:Octoller.ASUF.DesktopApp"
-             xmlns:convert="clr-namespace:Octoller.ASUF.DesktopApp.Support"
+             xmlns:support="clr-namespace:Octoller.ASUF.DesktopApp.Support"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-        <convert:EnumToArrayConvert x:Key="enumToArrayConvert"/>
-        <convert:EnumToItemConvert x:Key="enumItemConvert"/>
-        <convert:ExtensionArrayToStringConvert x:Key="arrayToStringConvert"/>
+        <support:EnumToArrayConvert x:Key="enumToArrayConvert"/>
+        <support:EnumToItemConvert x:Key="enumItemConvert"/>
+        <support:ExtensionArrayToStringConvert x:Key="arrayToStringConvert"/>
+        <support:CheckNumberFolder x:Key="checkNumber"/>
     </Application.Resources>
 </Application>

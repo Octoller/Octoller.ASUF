@@ -73,7 +73,7 @@ namespace Octoller.ASUF.Kernel.ServiceObjects {
         public int Limit {
             get => limit;
             set {
-                if (value <= 0) {
+                if (value < 0) {
                     throw new ArgumentException("Invalid limit specified");
                 } else {
                     limit = value;

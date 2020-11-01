@@ -29,7 +29,7 @@ namespace Octoller.ASUF.DesktopApp.Support.Command {
         private Watcher watcher;
 
         public SaveCurrentSettingsCommand(SettingsBuilder builder, Watcher watcher) 
-            : this(builder, watcher, "Save and Aplay settings") { }
+            : this(builder, watcher, "Save and aplay settings") { }
 
         public SaveCurrentSettingsCommand(SettingsBuilder builder, Watcher watcher, string text)
             : base(text) {
